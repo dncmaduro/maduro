@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import {
   Carousel,
   CarouselContent,
@@ -57,7 +58,8 @@ export const About = () => {
   return (
     <div className="flex flex-col space-y-8">
       <div className="flex flex-col md:flex-row items-center justify-center gap-8">
-        <img
+        <Image
+          alt="avatar"
           src={
             'https://res.cloudinary.com/dszkt92jr/image/upload/v1748702958/IMG_4963_3_awtojb.jpg'
           }
@@ -65,13 +67,13 @@ export const About = () => {
         />
         <div className="border-[2px] rounded-lg border-white w-full md:w-min-content max-w-[600px] flex items-center h-auto md:h-[240px] p-4">
           <p className="text-sm md:text-base">
-            I'm Dũng - a front-end developer with 1 year of hands-on experience building modern UIs
-            using React, Vite, and Tailwind. I've led multiple features from start to finish, always
-            with attention to clean code and great UX. While front-end is my main game, I'm not
-            afraid to jump into the back end. I've worked with NestJS, PostgreSQL, and MongoDB in
-            school projects, and interned with Ruby on Rails for 4 months - enough to hold my own in
-            a fullstack environment. I care about performance, maintainability, and building stuff
-            that actually feels good to use.
+            I&apos;m Dũng - a front-end developer with 1 year of hands-on experience building modern
+            UIs using React, Vite, and Tailwind. I&apos;ve led multiple features from start to
+            finish, always with attention to clean code and great UX. While front-end is my main
+            game, I&apos;m not afraid to jump into the back end. I&apos;ve worked with NestJS,
+            PostgreSQL, and MongoDB in school projects, and interned with Ruby on Rails for 4 months
+            - enough to hold my own in a fullstack environment. I care about performance,
+            maintainability, and building stuff that actually feels good to use.
           </p>
         </div>
       </div>
@@ -87,7 +89,7 @@ export const About = () => {
             {techImages.map((image, index) => (
               <CarouselItem key={index} className="basis-auto pl-2 md:pl-4">
                 <div className="p-1">
-                  <img
+                  <Image
                     src={image.src}
                     alt={image.alt}
                     className="w-[50px] h-[50px] md:w-[60px] md:h-[60px] object-contain"
