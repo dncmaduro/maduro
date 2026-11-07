@@ -87,6 +87,10 @@ function ExperiencePage() {
 }
 
 function AboutPage() {
+  const scrollToToolbox = () => {
+    document.getElementById('toolbox-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   return (
     <div className="about-content">
       <section className="about-intro">
@@ -99,9 +103,12 @@ function AboutPage() {
           <p>and sometimes i start a project at 2am and question my life choices the next morning.</p>
           <p>anyway, that&apos;s pretty much me.</p>
         </div>
-        <aside className="about-aside"><span className="stamp-box">FROM<br />VIETNAM<br /><b>VN / 04</b></span><span className="aside-microcopy">no origin story.<br />just tabs open.</span></aside>
+        <aside className="about-aside">
+          <div className="about-aside-top"><span className="stamp-box">FROM<br />VIETNAM<br /><b>VN / 04</b></span><span className="aside-microcopy">no origin story.<br />just tabs open.</span></div>
+          <button className="about-scroll-action" type="button" onClick={scrollToToolbox}>let&apos;s see what i do <span>↓</span></button>
+        </aside>
       </section>
-      <section className="toolbox-section" aria-labelledby="toolbox-title">
+      <section id="toolbox-section" className="toolbox-section" aria-labelledby="toolbox-title">
         <div className="section-rule"><span>01 / INVENTORY</span><span>things with little icons</span></div>
         <h2 id="toolbox-title">toolbox</h2>
         <Toolbox shelves={toolboxShelves} />
