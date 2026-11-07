@@ -24,7 +24,7 @@ export const experimentProjects: Project[] = [
     status: 'IN DEVELOPMENT',
     description: "made a game about crossing the street in Vietnam because apparently doing it in real life wasn't stressful enough.",
     tech: ['React', 'TypeScript', 'Three.js', 'React Three Fiber', 'Rapier'],
-    action: 'PRIVATE PROJECT',
+    demoUrl: 'https://cross-road-in-vietnam.vercel.app/',
   },
   {
     id: 'viewport-capture',
@@ -33,7 +33,7 @@ export const experimentProjects: Project[] = [
     type: 'Chrome Extension',
     description: 'got tired of taking screenshots one by one, so i made a chrome extension that does it for me.',
     tech: ['JavaScript', 'Chrome Extension Manifest V3'],
-    action: 'PRIVATE PROJECT',
+    demoUrl: 'https://chromewebstore.google.com/detail/viewport-capture/gaelmapmgljenmnddpnjadkfpdhncnnm',
   },
   {
     id: 'inoai',

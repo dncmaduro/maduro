@@ -20,7 +20,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       tech={project.tech}
       footer={hasFooter ? (
         <div className="project-actions">
-          {demoUrl && <a className="text-action" href={demoUrl} target="_blank" rel="noreferrer">{project.id === 'crossroads' ? 'PLAY' : 'OPEN'} <span>↗</span></a>}
+          {demoUrl && <a className="text-action" href={demoUrl} target="_blank" rel="noreferrer">TRY IT <span>↗</span></a>}
           {project.action && !demoUrl && <span className="project-note">{project.action}</span>}
           {sourceUrl && <a className="text-action text-action--muted" href={sourceUrl} target="_blank" rel="noreferrer">SOURCE <span>↗</span></a>}
         </div>
