@@ -37,7 +37,7 @@ export function InteriorPage({ page, onNavigate, onBack }: InteriorPageProps) {
         {page === 'about' && <AboutPage />}
         {page === 'contact' && <ContactPage />}
       </div>
-      <footer className="site-footer"><span>© 2026 MADURO</span><span>made with questionable life choices.</span></footer>
+      <footer className="site-footer"><span>© 2026 DUNG TRAN</span><span>made with questionable life choices.</span></footer>
     </main>
   )
 }
@@ -91,7 +91,7 @@ function AboutPage() {
     <div className="about-content">
       <section className="about-intro">
         <div className="about-text">
-          <p>i&apos;m maduro. a software engineer from vietnam.</p>
+          <p>i&apos;m dung tran. a software engineer from vietnam.</p>
           <p>i spend most of my day writing code, staring at code, wondering why my code doesn&apos;t work, and then realizing i was the problem all along.</p>
           <p>i mostly work with frontend stuff, but i like messing around with pretty much anything.</p>
           <p>web apps, mobile apps, browser extensions, games, ai stuff... whatever seems interesting at the moment.</p>

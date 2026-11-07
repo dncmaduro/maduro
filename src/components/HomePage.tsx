@@ -8,11 +8,11 @@ export function HomePage({ onNavigate }: HomePageProps) {
   return (
     <main className="home-page page-shell" aria-labelledby="home-title">
       <div className="home-topline">
-        <span className="eyebrow">MADURO / SOFTWARE ENGINEER</span>
+        <span className="eyebrow">DUNG TRAN / SOFTWARE ENGINEER</span>
       </div>
       <section className="home-hero">
         <p className="hero-kicker">serious engineer, unserious website.</p>
-        <h1 id="home-title">yo, i&apos;m maduro<span className="period">.</span></h1>
+        <h1 id="home-title">yo, i&apos;m Dung Tran <span className="nickname">(Maduro)</span><span className="period">.</span></h1>
         <div className="hero-copy">
           <p>just some engineer who likes building random shit.</p>
           <p>could be something useful, could be something completely stupid. honestly, i don&apos;t really care.</p>

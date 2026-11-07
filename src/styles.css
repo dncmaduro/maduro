@@ -37,6 +37,7 @@ a { text-decoration: none; }
 .hero-kicker { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 20px; }
 .hero-kicker::before { content: ''; width: 22px; height: 2px; display: inline-block; background: var(--black); }
 .home-hero h1 { margin: 0; max-width: 950px; font-size: clamp(66px, 10vw, 146px); line-height: .83; letter-spacing: -.05em; font-weight: 400; }
+.nickname { display: inline-block; margin-left: .08em; font-size: .34em; letter-spacing: -.02em; vertical-align: .2em; white-space: nowrap; }
 .period { font-style: italic; }
 .hero-copy { max-width: 610px; margin-top: 34px; font-size: clamp(21px, 2.35vw, 31px); line-height: 1.1; }
 .hero-copy p { margin: 0 0 8px; }
