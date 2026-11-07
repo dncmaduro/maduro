@@ -158,7 +158,8 @@ a { text-decoration: none; }
 
 /* experience */
 .timeline { max-width: 980px; padding: 74px 0 30px; }
-.timeline-item { display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 23px; min-height: 300px; }
+.timeline-item { display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 23px; min-height: 300px; padding-bottom: 52px; }
+.timeline-item:last-child { padding-bottom: 0; }
 .timeline-rail { position: relative; display: flex; justify-content: center; }
 .timeline-dot { z-index: 1; width: 15px; height: 15px; margin-top: 5px; background: var(--black); }
 .timeline-line { position: absolute; top: 21px; bottom: 0; width: 2px; background: var(--black); }
