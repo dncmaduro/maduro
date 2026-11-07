@@ -134,6 +134,7 @@ a { text-decoration: none; }
 .portfolio-card { border: var(--line); background: var(--white); box-shadow: 6px 6px 0 var(--black); padding: 22px; transition: transform .15s ease, box-shadow .15s ease; }
 .portfolio-card:hover { transform: translate(-3px, -4px); box-shadow: 10px 10px 0 var(--black); }
 .portfolio-card__meta { display: flex; justify-content: space-between; gap: 20px; color: var(--gray); font: 10px/1.4 'IBM Plex Mono', monospace; text-transform: uppercase; }
+.portfolio-card__meta > span:first-child { font-size: 12px; }
 .portfolio-card__meta-right { color: var(--black); text-align: right; }
 .portfolio-card h3 { margin: 22px 0 0; font-size: clamp(37px, 4.4vw, 62px); line-height: .9; letter-spacing: -.045em; font-weight: 400; }
 .portfolio-card__description { max-width: 720px; margin: 18px 0 0; font-size: 21px; line-height: 1.06; }
