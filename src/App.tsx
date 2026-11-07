@@ -20,12 +20,6 @@ const pageFromPath = (path: string): Page => {
 
 const pathForPage = (page: Page) => page === 'home' ? '/' : `/${page}`
 
-const pointFromElement = (element: HTMLElement | null): Point | null => {
-  if (!element) return null
-  const rect = element.getBoundingClientRect()
-  return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 - 12 }
-}
-
 const pointAboveTab = (element: HTMLElement | null): Point | null => {
   if (!element) return null
   const rect = element.getBoundingClientRect()
@@ -101,6 +95,7 @@ export default function App() {
     transitionLockRef.current = true
     pendingAttachPageRef.current = null
     detachCat()
+    setCatTarget(null)
     setCatLocked(true)
     setCatState('running')
 
@@ -126,7 +121,6 @@ export default function App() {
           return
         }
         const rect = box.getBoundingClientRect()
-        moveCat(pointFromElement(target), 0.38)
         if (!pageClone) {
           setCatTarget(null)
           setCatPosition(pointerRef.current)
@@ -159,7 +153,7 @@ export default function App() {
         })
       }, 60)
     }, 220)
-  }, [detachCat, moveCat, page, resetScroll, updateUrl])
+  }, [detachCat, page, resetScroll, updateUrl])
 
   const goToInternal = useCallback((nextPage: Page, tab: HTMLElement | null) => {
     if (nextPage === 'home') {
@@ -194,15 +188,14 @@ export default function App() {
     if (!internalPages.includes(nextPage) || transitionLockRef.current) return
 
     const box = target?.closest('.home-box') as HTMLElement | null
-    const destination = pointFromElement(target)
     const cardRect = box?.getBoundingClientRect() ?? null
 
     transitionLockRef.current = true
     pendingAttachPageRef.current = null
     detachCat()
+    setCatTarget(null)
     setCatLocked(true)
     setCatState('running')
-    moveCat(destination, 0.52)
 
     window.setTimeout(() => {
       resetScroll()
