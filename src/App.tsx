@@ -213,18 +213,17 @@ export default function App() {
           ease: 'power3.inOut',
           onComplete: () => {
             gsap.set(pageRoot, { clearProps: 'position,left,top,width,height,maxWidth,margin,overflow,transformOrigin,transform,zIndex,background' })
-            setCatState('sitting')
-            transitionLockRef.current = false
+            const tabPoint = pointAboveTab(document.querySelector(`[data-cat-tab="${nextPage}"]`))
+            setCatState('running')
+            moveCat(tabPoint, 0.46)
+            window.setTimeout(() => {
+              setCatState('sitting')
+              transitionLockRef.current = false
+            }, 470)
           },
         })
       }, 40)
     }, 360)
-
-    window.setTimeout(() => {
-      const tabPoint = pointAboveTab(document.querySelector(`[data-cat-tab="${nextPage}"]`))
-      setCatState('running')
-      moveCat(tabPoint, 0.46)
-    }, 520)
   }, [moveCat, resetScroll, updateUrl])
 
   useEffect(() => {
