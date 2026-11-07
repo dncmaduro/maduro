@@ -15,7 +15,6 @@ export function TabNavigation({ currentPage, onNavigate }: TabNavigationProps) {
           <button key={item.id} type="button" className={`tab ${active ? 'tab--active' : ''}`} data-cat-tab={item.id} aria-current={active ? 'page' : undefined} onClick={(event) => onNavigate(item.id, event.currentTarget)}>
             <span className="tab-number">0{item.plate}</span>
             <span>{item.label}</span>
-            {active && <span className="tab-spark" aria-hidden="true">✦</span>}
           </button>
         )
       })}
