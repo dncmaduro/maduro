@@ -18,10 +18,16 @@ const pointFromElement = (element: HTMLElement | null): Point | null => {
   return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 - 12 }
 }
 
+const pointAboveTab = (element: HTMLElement | null): Point | null => {
+  if (!element) return null
+  const rect = element.getBoundingClientRect()
+  return { x: rect.left + rect.width / 2, y: rect.top - 22 }
+}
+
 export default function App() {
   const initialPoint = useMemo(() => ({ x: Math.max(window.innerWidth * 0.54, 120), y: Math.max(window.innerHeight * 0.46, 160) }), [])
   const [page, setPage] = useState<Page>(() => pageFromPath(window.location.pathname))
-  const [catState, setCatState] = useState<CatState>(() => pageFromPath(window.location.pathname) === 'home' ? 'idle' : 'eating')
+  const [catState, setCatState] = useState<CatState>(() => pageFromPath(window.location.pathname) === 'home' ? 'idle' : 'sitting')
   const [catPosition, setCatPosition] = useState<Point>(initialPoint)
   const [catTarget, setCatTarget] = useState<(Point & { key: number; duration?: number }) | null>(null)
   const [catLocked, setCatLocked] = useState(page !== 'home')
@@ -70,7 +76,7 @@ export default function App() {
       goHome()
       return
     }
-    const destination = pointFromElement(tab)
+    const destination = pointAboveTab(tab)
     if (transitionLockRef.current) return
     transitionLockRef.current = true
     setCatLocked(true)
@@ -79,9 +85,8 @@ export default function App() {
     window.setTimeout(() => {
       setPage(nextPage)
       updateUrl(nextPage)
-      setCatState('eating')
+      setCatState('sitting')
       transitionLockRef.current = false
-      window.setTimeout(() => setCatTarget(destination ? { ...destination, key: Date.now(), duration: 0.18 } : null), 180)
     }, 340)
   }, [goHome, moveCat, updateUrl])
 
@@ -100,9 +105,13 @@ export default function App() {
     window.setTimeout(() => {
       setPage(nextPage)
       updateUrl(nextPage)
-      setCatState('eating')
       transitionLockRef.current = false
-      window.setTimeout(() => setCatTarget(destination ? { ...destination, key: Date.now(), duration: 0.18 } : null), 200)
+      window.setTimeout(() => {
+        const tabPoint = pointAboveTab(document.querySelector(`[data-cat-tab="${nextPage}"]`))
+        setCatState('running')
+        moveCat(tabPoint, 0.5)
+        window.setTimeout(() => setCatState('sitting'), 500)
+      }, 50)
     }, 700)
   }, [moveCat, updateUrl])
 
@@ -113,9 +122,9 @@ export default function App() {
       setPage(nextPage)
       setCatLocked(nextPage !== 'home')
       setCatTarget(null)
-      setCatState(nextPage === 'home' ? 'idle' : 'eating')
+      setCatState(nextPage === 'home' ? 'idle' : 'sitting')
       window.setTimeout(() => {
-        if (nextPage !== 'home') moveCat(pointFromElement(document.querySelector(`[data-cat-tab="${nextPage}"]`)), 0.25)
+        if (nextPage !== 'home') moveCat(pointAboveTab(document.querySelector(`[data-cat-tab="${nextPage}"]`)), 0.25)
       }, 40)
     }
     window.addEventListener('popstate', onPopState)
@@ -125,7 +134,7 @@ export default function App() {
   useEffect(() => {
     document.documentElement.scrollTop = 0
     if (page !== 'home' && !catTarget) {
-      const timer = window.setTimeout(() => moveCat(pointFromElement(document.querySelector(`[data-cat-tab="${page}"]`)), 0.25), 40)
+      const timer = window.setTimeout(() => moveCat(pointAboveTab(document.querySelector(`[data-cat-tab="${page}"]`)), 0.25), 40)
       return () => window.clearTimeout(timer)
     }
   }, [catTarget, moveCat, page])
