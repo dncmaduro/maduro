@@ -21,7 +21,7 @@ const pointFromElement = (element: HTMLElement | null): Point | null => {
 const pointAboveTab = (element: HTMLElement | null): Point | null => {
   if (!element) return null
   const rect = element.getBoundingClientRect()
-  return { x: rect.left + rect.width / 2, y: rect.top - 22 }
+  return { x: rect.left + rect.width / 2 + window.scrollX, y: rect.top - 22 + window.scrollY }
 }
 
 export default function App() {
@@ -58,7 +58,7 @@ export default function App() {
     if (page === 'home' || transitionLockRef.current) return
     transitionLockRef.current = true
     setCatState('running')
-    const backPoint = { x: 72, y: 82 }
+    const backPoint = { x: 72 + window.scrollX, y: 82 + window.scrollY }
     moveCat(backPoint, 0.32)
     window.setTimeout(() => {
       setPage('home')
@@ -178,7 +178,7 @@ export default function App() {
       <a className="skip-link" href="#page-title">skip to content</a>
       <div className="page-grain" aria-hidden="true" />
       {page === 'home' ? <HomePage onNavigate={openFromHome} /> : <InteriorPage page={page} onNavigate={goToInternal} onBack={goHome} />}
-      <PixelCat state={catState} position={catPosition} target={catTarget} onEasterEgg={showEasterEgg} />
+      <PixelCat state={catState} position={catPosition} target={catTarget} onEasterEgg={showEasterEgg} documentAnchored={page !== 'home'} />
       {easterEgg && <div className="cat-speech" aria-live="polite">stop clicking me.<br />i&apos;m working.</div>}
       <div className="keyboard-hint" aria-hidden="true">1—4 navigate · esc home</div>
     </div>

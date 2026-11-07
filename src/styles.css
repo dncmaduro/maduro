@@ -72,6 +72,7 @@ a { text-decoration: none; }
 
 /* persistent cat */
 .pixel-cat { position: fixed !important; z-index: 9999; left: 50%; top: 50%; width: 64px; height: 58px; transform: translate(-50%, -50%); pointer-events: none; user-select: none; will-change: left, top; }
+.pixel-cat--document { position: absolute !important; }
 .cat-shadow { position: absolute; z-index: -1; left: 7px; bottom: 0; width: 48px; height: 7px; background: var(--black); opacity: .18; }
 .cat-body { position: absolute; left: 9px; top: 17px; width: 44px; height: 32px; border: 3px solid var(--black); background: var(--white); }
 .cat-ear { position: absolute; top: -11px; width: 14px; height: 14px; border: 3px solid var(--black); background: var(--white); transform: rotate(45deg); }
