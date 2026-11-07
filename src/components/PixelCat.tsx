@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { gsap } from 'gsap'
 import type { CatState } from '../types'
 
@@ -54,7 +55,7 @@ export function PixelCat({ state, position, target, onEasterEgg }: PixelCatProps
     return () => document.removeEventListener('click', onDocumentClick)
   }, [onEasterEgg])
 
-  return (
+  const cat = (
     <div ref={catRef} className={`pixel-cat pixel-cat--${state}`} aria-hidden="true">
       <span className="cat-shadow" />
       <span className="cat-tail" />
@@ -67,4 +68,6 @@ export function PixelCat({ state, position, target, onEasterEgg }: PixelCatProps
       </span>
     </div>
   )
+
+  return createPortal(cat, document.body)
 }
