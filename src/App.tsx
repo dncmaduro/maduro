@@ -87,11 +87,20 @@ export default function App() {
     window.setTimeout(() => setEasterEgg(false), 2600)
   }, [])
 
+  const detachCat = useCallback(() => {
+    const cat = document.querySelector('.pixel-cat') as HTMLElement | null
+    if (cat) {
+      const rect = cat.getBoundingClientRect()
+      setCatPosition({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 })
+    }
+    setCatAnchor(null)
+  }, [])
+
   const goHome = useCallback(() => {
     if (page === 'home' || transitionLockRef.current) return
     transitionLockRef.current = true
     pendingAttachPageRef.current = null
-    setCatAnchor(null)
+    detachCat()
     setCatLocked(true)
     setCatState('running')
 
@@ -150,18 +159,19 @@ export default function App() {
         })
       }, 60)
     }, 220)
-  }, [moveCat, page, resetScroll, updateUrl])
+  }, [detachCat, moveCat, page, resetScroll, updateUrl])
 
   const goToInternal = useCallback((nextPage: Page, tab: HTMLElement | null) => {
     if (nextPage === 'home') {
       goHome()
       return
     }
+    if (nextPage === page) return
     const destination = pointAboveTab(tab)
     if (transitionLockRef.current) return
     transitionLockRef.current = true
     pendingAttachPageRef.current = null
-    setCatAnchor(null)
+    detachCat()
     setCatLocked(true)
     setCatState('jumping')
     moveCat(destination, 0.48)
@@ -177,7 +187,7 @@ export default function App() {
         transitionLockRef.current = false
       }, 170)
     }, 360)
-  }, [goHome, moveCat, resetScroll, updateUrl])
+  }, [detachCat, goHome, moveCat, page, resetScroll, updateUrl])
 
   const openFromHome = useCallback((nextPageString: string, target: HTMLElement | null) => {
     const nextPage = nextPageString as Page
@@ -189,7 +199,7 @@ export default function App() {
 
     transitionLockRef.current = true
     pendingAttachPageRef.current = null
-    setCatAnchor(null)
+    detachCat()
     setCatLocked(true)
     setCatState('running')
     moveCat(destination, 0.52)
@@ -247,7 +257,7 @@ export default function App() {
         })
       }, 40)
     }, 360)
-  }, [moveCat, resetScroll, updateUrl])
+  }, [detachCat, moveCat, resetScroll, updateUrl])
 
   useEffect(() => {
     const canonicalPath = pathForPage(page)
@@ -259,7 +269,7 @@ export default function App() {
       const nextPage = pageFromPath(window.location.pathname)
       transitionLockRef.current = false
       pendingAttachPageRef.current = nextPage === 'home' ? null : nextPage
-      setCatAnchor(null)
+      detachCat()
       setPage(nextPage)
       setCatLocked(nextPage !== 'home')
       setCatTarget(null)
@@ -272,7 +282,7 @@ export default function App() {
     }
     window.addEventListener('popstate', onPopState)
     return () => window.removeEventListener('popstate', onPopState)
-  }, [moveCat, resetScroll])
+  }, [detachCat, moveCat, resetScroll])
 
   useEffect(() => {
     resetScroll()

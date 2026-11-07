@@ -18,10 +18,14 @@ export function PixelCat({ state, position, target, onEasterEgg, anchor = null, 
   const catRef = useRef<HTMLDivElement>(null)
   const lastClickRef = useRef(0)
   const clickCountRef = useRef(0)
+  const wasAttachedRef = useRef(attached)
 
   useEffect(() => {
+    const wasAttached = wasAttachedRef.current
+    wasAttachedRef.current = attached
     if (!catRef.current || attached) return
     gsap.killTweensOf(catRef.current)
+    if (wasAttached) gsap.set(catRef.current, { left: position.x, top: position.y })
     if (target) {
       gsap.to(catRef.current, {
         left: target.x,
