@@ -12,7 +12,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
       </div>
       <section className="home-hero">
         <p className="hero-kicker">serious engineer, unserious website.</p>
-        <h1 id="home-title">yo, i&apos;m Dung Tran <span className="nickname">(Maduro)</span></h1>
+        <h1 id="home-title">yo, i&apos;m DUNG TRAN <span className="nickname">(Maduro)</span></h1>
         <div className="hero-copy">
           <p>just some engineer who likes building random shit.</p>
           <p>could be something useful, could be something completely stupid. honestly, i don&apos;t really care.</p>
