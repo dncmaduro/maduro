@@ -1,3 +1,5 @@
+import type { SimpleIcon } from 'simple-icons'
+
 export type Page = 'home' | 'projects' | 'experience' | 'about' | 'contact'
 
 export type CatState = 'idle' | 'walking' | 'running' | 'jumping' | 'sitting' | 'sleeping' | 'restless'
@@ -29,7 +31,7 @@ export type ExperienceItem = {
 
 export type ToolboxItem = {
   name: string
-  symbol: string
+  icon: SimpleIcon
   tooltip: string
   flavor: string
   accent?: string

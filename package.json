@@ -13,6 +13,7 @@
     "gsap": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "simple-icons": "^16.36.0",
     "typescript": "latest",
     "vite": "latest"
   },

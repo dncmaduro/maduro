@@ -1,4 +1,5 @@
 import type { ExperienceItem, Project, ToolboxShelf } from '../types'
+import { siDocker, siFlutter, siGit, siMongodb, siNodedotjs, siPostgresql, siReact, siSupabase, siVercel, siVuedotjs } from 'simple-icons'
 
 export const links = {
   email: 'mailto:hello@maduro.dev',
@@ -123,44 +124,25 @@ export const experience: ExperienceItem[] = [
 
 export const toolboxShelves: ToolboxShelf[] = [
   {
-    id: 'often',
-    label: 'stuff i use a lot',
+    id: 'software',
+    label: 'software',
     items: [
-      { name: 'React', symbol: '◒', tooltip: 'REACT', flavor: 'yeah, i use this a lot.' },
-      { name: 'TypeScript', symbol: 'TS', tooltip: 'TYPESCRIPT', flavor: 'javascript, but it yells at me.' },
-      { name: 'Flutter', symbol: '◆', tooltip: 'FLUTTER', flavor: 'widgets. widgets everywhere.' },
-      { name: 'JavaScript', symbol: 'JS', tooltip: 'JAVASCRIPT', flavor: "it works until it doesn't." },
+      { name: 'React', icon: siReact, tooltip: 'REACT', flavor: 'yeah, i use this a lot.' },
+      { name: 'Vue', icon: siVuedotjs, tooltip: 'VUE', flavor: 'simple, flexible, and somehow still fun.' },
+      { name: 'Flutter', icon: siFlutter, tooltip: 'FLUTTER', flavor: 'widgets. widgets everywhere.' },
+      { name: 'Nodejs', icon: siNodedotjs, tooltip: 'NODEJS', flavor: 'javascript escaped the browser.' },
+      { name: 'Mongo DB', icon: siMongodb, tooltip: 'MONGO DB', flavor: 'sometimes the schema is a feeling.' },
+      { name: 'Postgres', icon: siPostgresql, tooltip: 'POSTGRES', flavor: "where i keep things i don't want to lose." },
     ],
   },
   {
-    id: 'data',
-    label: 'backend & data',
+    id: 'other',
+    label: 'other',
     items: [
-      { name: 'Node.js', symbol: 'N', tooltip: 'NODE.JS', flavor: 'javascript escaped the browser.' },
-      { name: 'NestJS', symbol: '✚', tooltip: 'NESTJS', flavor: 'decorators doing their little dance.' },
-      { name: 'PostgreSQL', symbol: '🐘', tooltip: 'POSTGRESQL', flavor: "where i keep things i don't want to lose." },
-      { name: 'MongoDB', symbol: 'M', tooltip: 'MONGODB', flavor: 'sometimes the schema is a feeling.' },
-    ],
-  },
-  {
-    id: 'sane',
-    label: 'tools that keep me sane',
-    items: [
-      { name: 'Git', symbol: '⑂', tooltip: 'GIT', flavor: "please don't make me resolve another conflict." },
-      { name: 'Docker', symbol: '▣', tooltip: 'DOCKER', flavor: 'works on my machine. now yours too. probably.' },
-      { name: 'Vercel', symbol: '▲', tooltip: 'VERCEL', flavor: 'push code. hope for the best.' },
-      { name: 'Figma', symbol: '●', tooltip: 'FIGMA', flavor: 'where pixels go to get judged.' },
-    ],
-  },
-  {
-    id: 'exploring',
-    label: "things i'm messing with",
-    note: 'currently exploring',
-    items: [
-      { name: 'Three.js', symbol: '◇', tooltip: 'THREE.JS', flavor: 'wireframes and bad decisions.' },
-      { name: 'AI Agents', symbol: '◈', tooltip: 'AI AGENTS', flavor: 'trying to make computers do more of my work.' },
-      { name: 'RAG', symbol: '↯', tooltip: 'RAG', flavor: 'search, but with extra steps.' },
-      { name: 'MCP', symbol: '⌘', tooltip: 'MCP', flavor: 'connectors for my connectors.' },
+      { name: 'Git', icon: siGit, tooltip: 'GIT', flavor: "please don't make me resolve another conflict." },
+      { name: 'Vercel', icon: siVercel, tooltip: 'VERCEL', flavor: 'push code. hope for the best.' },
+      { name: 'Supabase', icon: siSupabase, tooltip: 'SUPABASE', flavor: 'backend, but with fewer headaches.' },
+      { name: 'Docker', icon: siDocker, tooltip: 'DOCKER', flavor: 'works on my machine. now yours too. probably.' },
     ],
   },
 ]
