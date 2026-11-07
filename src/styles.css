@@ -147,7 +147,7 @@ a { text-decoration: none; }
 .work-metric strong { font: inherit; font-weight: 400; letter-spacing: normal; }
 .portfolio-card--freelance .work-project-list { margin-top: 18px; }
 .portfolio-card--freelance .work-project { display: flex; justify-content: space-between; gap: 20px; padding: 17px 0; }
-.portfolio-card--freelance .work-project h4 { font-size: clamp(21px, 2.7vw, 32px); }
+.portfolio-card--freelance .work-project h4 { font-size: clamp(18px, 2.2vw, 27px); }
 .portfolio-card--freelance .work-project::after { content: 'PRIVATE PROJECT'; align-self: center; color: var(--gray); font: 9px 'IBM Plex Mono', monospace; white-space: nowrap; }
 .portfolio-card--experiment h3 { font-size: clamp(34px, 4vw, 55px); }
 .portfolio-card--experiment .tag-row { margin-top: 22px; }
