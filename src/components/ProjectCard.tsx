@@ -32,11 +32,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
           {project.private ? (
             <button type="button" className="text-action" onClick={() => undefined}>{project.action} <span>↗</span></button>
           ) : project.demoUrl ? (
-            <a className="text-action" href={project.demoUrl} onClick={(event) => event.preventDefault()}>{project.id === 'crossroads' ? 'PLAY GAME' : 'CHROME STORE'} <span>↗</span></a>
+            <a className="text-action" href={project.demoUrl} target="_blank" rel="noreferrer" onClick={(event) => event.preventDefault()}>{project.id === 'crossroads' ? 'PLAY GAME' : 'CHROME STORE'} <span>↗</span></a>
           ) : (
             <span className="project-note">{project.action}</span>
           )}
-          {project.sourceUrl && <a className="text-action text-action--muted" href={project.sourceUrl} onClick={(event) => event.preventDefault()}>SOURCE CODE <span>↗</span></a>}
+          {project.sourceUrl && <a className="text-action text-action--muted" href={project.sourceUrl} target="_blank" rel="noreferrer" onClick={(event) => event.preventDefault()}>SOURCE CODE <span>↗</span></a>}
         </div>
       </div>
     </article>

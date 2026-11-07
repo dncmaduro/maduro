@@ -131,10 +131,10 @@ function ContactPage() {
         <p>i&apos;ll probably reply. unless i&apos;m asleep.</p>
       </section>
       <section className="contact-links" aria-label="Contact links">
-        <a className="contact-link contact-link--primary" href={links.email}><span>EMAIL</span><strong>send me an email ↗</strong></a>
-        <a className="contact-link" href={links.github}><span>GITHUB</span><strong>github ↗</strong></a>
-        <a className="contact-link" href={links.linkedin}><span>LINKEDIN</span><strong>linkedin ↗</strong></a>
-        <a className="contact-link" href={links.stackoverflow}><span>STACK OVERFLOW</span><strong>stack overflow ↗</strong></a>
+        <a className="contact-link contact-link--primary" href={links.email} target="_blank" rel="noreferrer"><span>EMAIL</span><strong>send me an email ↗</strong></a>
+        <a className="contact-link" href={links.github} target="_blank" rel="noreferrer"><span>GITHUB</span><strong>github ↗</strong></a>
+        <a className="contact-link" href={links.linkedin} target="_blank" rel="noreferrer"><span>LINKEDIN</span><strong>linkedin ↗</strong></a>
+        <a className="contact-link" href={links.stackoverflow} target="_blank" rel="noreferrer"><span>STACK OVERFLOW</span><strong>stack overflow ↗</strong></a>
       </section>
       <div className="contact-footnote">no forms. no captchas. just email me like a normal person.</div>
     </div>
