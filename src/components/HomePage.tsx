@@ -9,7 +9,6 @@ export function HomePage({ onNavigate }: HomePageProps) {
     <main className="home-page page-shell" aria-labelledby="home-title">
       <div className="home-topline">
         <span className="eyebrow">MADURO / SOFTWARE ENGINEER</span>
-        <span className="eyebrow eyebrow--right">NULL THE CAT · CURRENTLY HUNGRY</span>
       </div>
       <section className="home-hero">
         <p className="hero-kicker">serious engineer, unserious website.</p>
