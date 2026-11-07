@@ -33,8 +33,17 @@ const pointAboveTab = (element: HTMLElement | null): Point | null => {
 }
 
 const cloneInteriorPage = (pageRoot: HTMLElement) => {
+  const rect = pageRoot.getBoundingClientRect()
   const clone = pageRoot.cloneNode(true) as HTMLElement
   clone.classList.add('page-transition-page-clone')
+  Object.assign(clone.style, {
+    left: `${rect.left}px`,
+    top: `${rect.top}px`,
+    width: `${rect.width}px`,
+    height: `${window.innerHeight}px`,
+    maxWidth: 'none',
+    margin: '0',
+  })
   document.body.appendChild(clone)
   return clone
 }
@@ -110,10 +119,11 @@ export default function App() {
           transitionLockRef.current = false
           return
         }
+        const pageRect = pageClone.getBoundingClientRect()
         gsap.to(pageClone, {
-          x: rect.left,
-          y: rect.top,
-          scaleX: rect.width / window.innerWidth,
+          x: rect.left - pageRect.left,
+          y: rect.top - pageRect.top,
+          scaleX: rect.width / pageRect.width,
           scaleY: rect.height / window.innerHeight,
           opacity: 0,
           duration: 0.56,
@@ -178,24 +188,25 @@ export default function App() {
           transitionLockRef.current = false
           return
         }
+        const pageRect = pageRoot.getBoundingClientRect()
         gsap.set(pageRoot, {
           position: 'fixed',
-          left: cardRect.left,
-          top: cardRect.top,
-          width: window.innerWidth,
+          left: pageRect.left,
+          top: pageRect.top,
+          width: pageRect.width,
           height: window.innerHeight,
           maxWidth: 'none',
           margin: 0,
           overflow: 'hidden',
           transformOrigin: 'top left',
-          scaleX: cardRect.width / window.innerWidth,
+          scaleX: cardRect.width / pageRect.width,
           scaleY: cardRect.height / window.innerHeight,
           zIndex: 80,
           background: 'var(--paper)',
         })
         gsap.to(pageRoot, {
-          left: 0,
-          top: 0,
+          left: pageRect.left,
+          top: pageRect.top,
           scaleX: 1,
           scaleY: 1,
           duration: 0.72,
