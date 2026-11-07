@@ -1,44 +1,30 @@
 import type { Project } from '../types'
+import { PortfolioCard } from './PortfolioCard'
 
 type ProjectCardProps = {
   project: Project
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
+  const demoUrl = project.demoUrl && project.demoUrl !== '#' ? project.demoUrl : undefined
+  const sourceUrl = project.sourceUrl && project.sourceUrl !== '#' ? project.sourceUrl : undefined
+  const hasFooter = Boolean(demoUrl || sourceUrl || project.action)
+
   return (
-    <article className="project-card">
-      <div className="project-preview" aria-hidden="true">
-        <span className="preview-grid" />
-        <span className="preview-label">PROJECT PREVIEW</span>
-        <span className="preview-corner">{project.number}</span>
-        <span className="preview-cursor">▮</span>
-      </div>
-      <div className="project-card__body">
-        <div className="project-meta">
-          <span>{project.number} / {project.type}</span>
-          {project.status && <span className="project-status">{project.status}</span>}
-        </div>
-        <h3>{project.title}</h3>
-        <p>{project.description}</p>
-        <div className="tag-row" aria-label="Technologies used">
-          {project.tech.map((tech) => <span className="tag" key={tech}>{tech}</span>)}
-        </div>
-        {project.features && (
-          <ul className="feature-list">
-            {project.features.map((feature) => <li key={feature}>{feature}</li>)}
-          </ul>
-        )}
+    <PortfolioCard
+      number={project.number}
+      meta={project.type}
+      metaRight={project.status}
+      title={project.title}
+      description={project.description}
+      tech={project.tech}
+      footer={hasFooter ? (
         <div className="project-actions">
-          {project.private ? (
-            <button type="button" className="text-action" onClick={() => undefined}>{project.action} <span>↗</span></button>
-          ) : project.demoUrl ? (
-            <a className="text-action" href={project.demoUrl} target="_blank" rel="noreferrer" onClick={(event) => event.preventDefault()}>{project.id === 'crossroads' ? 'PLAY GAME' : 'CHROME STORE'} <span>↗</span></a>
-          ) : (
-            <span className="project-note">{project.action}</span>
-          )}
-          {project.sourceUrl && <a className="text-action text-action--muted" href={project.sourceUrl} target="_blank" rel="noreferrer" onClick={(event) => event.preventDefault()}>SOURCE CODE <span>↗</span></a>}
+          {demoUrl && <a className="text-action" href={demoUrl} target="_blank" rel="noreferrer">{project.id === 'crossroads' ? 'PLAY' : 'OPEN'} <span>↗</span></a>}
+          {project.action && !demoUrl && <span className="project-note">{project.action}</span>}
+          {sourceUrl && <a className="text-action text-action--muted" href={sourceUrl} target="_blank" rel="noreferrer">SOURCE <span>↗</span></a>}
         </div>
-      </div>
-    </article>
+      ) : undefined}
+    />
   )
 }

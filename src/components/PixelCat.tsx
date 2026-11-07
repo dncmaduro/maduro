@@ -10,10 +10,9 @@ type PixelCatProps = {
   position: Point
   target?: (Point & { key: number; duration?: number }) | null
   onEasterEgg?: () => void
-  documentAnchored?: boolean
 }
 
-export function PixelCat({ state, position, target, onEasterEgg, documentAnchored = false }: PixelCatProps) {
+export function PixelCat({ state, position, target, onEasterEgg }: PixelCatProps) {
   const catRef = useRef<HTMLDivElement>(null)
   const lastClickRef = useRef(0)
   const clickCountRef = useRef(0)
@@ -57,7 +56,7 @@ export function PixelCat({ state, position, target, onEasterEgg, documentAnchore
   }, [onEasterEgg])
 
   const cat = (
-    <div ref={catRef} className={`pixel-cat pixel-cat--${state} ${documentAnchored ? 'pixel-cat--document' : ''}`} aria-hidden="true">
+    <div ref={catRef} className={`pixel-cat pixel-cat--${state}`} aria-hidden="true">
       <span className="cat-shadow" />
       <span className="cat-tail" />
       <span className="cat-body">

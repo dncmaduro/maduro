@@ -1,5 +1,6 @@
-import { experience, experiments, into, links, projects, toolboxShelves } from '../data/siteData'
-import type { Page } from '../types'
+import { experimentProjects, experiments, into, links, toolboxShelves, workItems } from '../data/siteData'
+import type { Page, WorkItem } from '../types'
+import { PortfolioCard } from './PortfolioCard'
 import { ProjectCard } from './ProjectCard'
 import { TabNavigation } from './TabNavigation'
 import { Toolbox } from './Toolbox'
@@ -11,8 +12,8 @@ type InteriorPageProps = {
 }
 
 const pageCopy = {
-  projects: { kicker: '01 / OUTPUT', title: "stuff i've made.", subtitle: 'some useful. some questionable.' },
-  experience: { kicker: '02 / HISTORY', title: 'places that paid me to code.', subtitle: 'a mostly chronological record of surviving the build.' },
+  work: { kicker: '01 / WORK', title: 'places that paid me to code.', subtitle: 'real projects. real deadlines. unfortunately.' },
+  experiments: { kicker: '02 / EXPERIMENTS', title: 'things nobody asked for.', subtitle: 'no client. no ticket. questionable decisions.' },
   about: { kicker: '03 / CONTEXT', title: "so, who's this guy?", subtitle: 'a little background before you judge the code.' },
   contact: { kicker: '04 / OPEN PORT', title: 'wanna talk?', subtitle: 'no forms. no captchas. just email me like a normal person.' },
 } as const
@@ -32,8 +33,8 @@ export function InteriorPage({ page, onNavigate, onBack }: InteriorPageProps) {
           <h1 id="page-title">{copy.title}</h1>
           <p className="page-subtitle">{copy.subtitle}</p>
         </div>
-        {page === 'projects' && <ProjectsPage />}
-        {page === 'experience' && <ExperiencePage />}
+        {page === 'work' && <WorkPage onNavigate={onNavigate} />}
+        {page === 'experiments' && <ExperimentsPage />}
         {page === 'about' && <AboutPage />}
         {page === 'contact' && <ContactPage />}
       </div>
@@ -42,47 +43,61 @@ export function InteriorPage({ page, onNavigate, onBack }: InteriorPageProps) {
   )
 }
 
-function ProjectsPage() {
+function WorkPage({ onNavigate }: { onNavigate: InteriorPageProps['onNavigate'] }) {
+  const goToExperiments = () => {
+    const tab = document.querySelector('[data-cat-tab="experiments"]') as HTMLElement | null
+    onNavigate('experiments', tab)
+  }
+
   return (
-    <div className="projects-content">
-      <div className="project-grid">
-        {projects.map((project) => <ProjectCard project={project} key={project.id} />)}
+    <div className="work-content">
+      <div className="portfolio-card-list">
+        {workItems.map((item) => <WorkCard item={item} key={item.company} />)}
       </div>
-      <section className="experiments-section" aria-labelledby="experiments-title">
-        <div className="section-rule"><span>02 / SIDE QUESTS</span><span>not products yet. relax.</span></div>
-        <h2 id="experiments-title">dumb ideas that somehow became code.</h2>
-        <div className="experiment-list">
+      <section className="work-cta" aria-label="Continue to experiments">
+        <p>okay, that&apos;s the responsible stuff.<br />wanna see what i build when nobody asks me?</p>
+        <button className="text-action" type="button" onClick={goToExperiments}>SEE THE EXPERIMENTS <span>→</span></button>
+      </section>
+    </div>
+  )
+}
+
+function WorkCard({ item }: { item: WorkItem }) {
+  return (
+    <PortfolioCard number={item.number} meta={item.period} metaRight={item.role} title={item.company} variant="work" className={item.freelance ? 'portfolio-card--freelance' : ''}>
+      <div className="work-project-list">
+        {item.projects.map((project) => (
+          <section className="work-project" key={project.title}>
+            <h4>{project.title}</h4>
+            {project.bullets && <ul className="work-bullets">{project.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>}
+            {project.metric && <div className="work-metric"><span>PERFORMANCE TUNE-UP</span><strong>{project.metric}</strong><small>somehow made it less haunted.</small></div>}
+          </section>
+        ))}
+      </div>
+    </PortfolioCard>
+  )
+}
+
+function ExperimentsPage() {
+  return (
+    <div className="experiments-content">
+      <div className="portfolio-card-list portfolio-card-list--experiments">
+        {experimentProjects.map((project) => <ProjectCard project={project} key={project.id} />)}
+      </div>
+      <section className="side-quests-section" aria-labelledby="side-quests-title">
+        <div className="section-rule"><span>04 / SIDE QUESTS</span><span>smaller commitment</span></div>
+        <h2 id="side-quests-title">dumb ideas, smaller commitment.</h2>
+        <div className="side-quest-list">
           {experiments.map((experiment, index) => (
-            <article className="experiment-item" key={experiment.title}>
+            <article className="side-quest-item" key={experiment.title}>
               <span className="experiment-number">0{index + 1}</span>
-              <div><h3>{experiment.title}</h3><p>{experiment.description}</p>{experiment.detail && <small>{experiment.detail}</small>}</div>
+              <div><h3>{experiment.title}</h3><p>{experiment.description}</p></div>
               <span className="experiment-label">{experiment.label}</span>
             </article>
           ))}
         </div>
       </section>
     </div>
-  )
-}
-
-function ExperiencePage() {
-  return (
-    <section className="timeline" aria-label="Work experience">
-      {experience.map((item, index) => (
-        <article className={`timeline-item ${index === 0 ? 'timeline-item--current' : ''}`} key={item.company}>
-          <div className="timeline-rail"><span className="timeline-dot" /><span className="timeline-line" /></div>
-          <div className="timeline-main">
-            <div className="timeline-period">{item.period}</div>
-            <h2>{item.company}</h2>
-            <div className="timeline-role">{item.role}</div>
-            <p>{item.description}</p>
-            {item.metric && <div className="metric-block"><span className="metric-label">PERFORMANCE TUNE-UP</span><strong>{item.metric}</strong><span className="metric-caption">somehow made it less haunted.</span></div>}
-            {item.highlights && <ul className="highlight-list">{item.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}</ul>}
-            {item.tech && <div className="tag-row">{item.tech.map((tech) => <span className="tag" key={tech}>{tech}</span>)}</div>}
-          </div>
-        </article>
-      ))}
-    </section>
   )
 }
 

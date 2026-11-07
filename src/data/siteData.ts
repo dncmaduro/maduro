@@ -1,4 +1,4 @@
-import type { ExperienceItem, Project, ToolboxShelf } from '../types'
+import type { Project, ToolboxShelf } from '../types'
 import { siDocker, siFlutter, siGit, siMongodb, siNodedotjs, siPostgresql, siReact, siSupabase, siVercel, siVuedotjs } from 'simple-icons'
 
 export const links = {
@@ -9,35 +9,31 @@ export const links = {
 }
 
 export const navItems = [
-  { id: 'projects', label: 'projects', plate: '01', detail: '</>' },
-  { id: 'experience', label: 'experience', plate: '02', detail: '▤' },
+  { id: 'work', label: 'work', plate: '01', detail: '▤' },
+  { id: 'experiments', label: 'experiments', plate: '02', detail: '</>' },
   { id: 'about', label: 'about', plate: '03', detail: '✦' },
   { id: 'contact', label: 'contact', plate: '04', detail: '✉' },
 ] as const
 
-export const projects: Project[] = [
+export const experimentProjects: Project[] = [
   {
     id: 'crossroads',
     number: '01',
     title: 'CrossRoadsInVietnam',
-    type: 'Personal / Web Game',
-    status: 'In development',
+    type: 'Web Game',
+    status: 'IN DEVELOPMENT',
     description: "made a game about crossing the street in Vietnam because apparently doing it in real life wasn't stressful enough.",
     tech: ['React', 'TypeScript', 'Three.js', 'React Three Fiber', 'Rapier'],
-    features: ['Vietnamese 3D street environment', 'traffic AI', 'collision system', 'multiple levels', 'ambient + spatial audio', 'pedestrians + vehicle types'],
-    demoUrl: '#',
-    sourceUrl: '#',
+    action: 'PRIVATE PROJECT',
   },
   {
     id: 'viewport-capture',
     number: '02',
     title: 'Viewport Capture',
     type: 'Chrome Extension',
-    description: "got tired of taking screenshots one by one, so i made a chrome extension that does it for me. yeah, that's pretty much it.",
+    description: 'got tired of taking screenshots one by one, so i made a chrome extension that does it for me.',
     tech: ['JavaScript', 'Chrome Extension Manifest V3'],
-    features: ['automatic viewport scrolling', 'PNG capture + ZIP export', 'lazy-loaded content support', 'restores original scroll position', 'stop / cancel overlay', 'minimal permissions'],
-    demoUrl: '#',
-    sourceUrl: '#',
+    action: 'PRIVATE PROJECT',
   },
   {
     id: 'inoai',
@@ -45,80 +41,58 @@ export const projects: Project[] = [
     title: 'InoAI',
     type: 'AI / Education',
     status: 'IN PROGRESS',
-    description: "trying to make learning a little less painful with ai. still figuring things out, so don't expect magic just yet.",
+    description: "trying to make learning a little less painful with ai. still figuring things out.",
     tech: ['AI', 'Education'],
-    action: 'FOLLOW THE BUILD',
-  },
-  {
-    id: 'revenue',
-    number: '04',
-    title: 'E-commerce Revenue Management',
-    type: 'Freelance / Internal Tool',
-    description: 'turns out managing revenue across multiple e-commerce platforms is a mess. so i built something to make that mess slightly more manageable.',
-    tech: ['Dashboards', 'Analytics', 'Reporting'],
-    features: ['multi-channel revenue tracking', 'revenue analytics', 'SKU-level insights', 'channel comparisons', 'KPI visualization'],
-    action: 'VIEW CASE STUDY',
-    private: true,
-  },
-  {
-    id: 'attendance',
-    number: '05',
-    title: 'Employee Attendance System',
-    type: 'Freelance / Internal Tool',
-    description: "because apparently spreadsheets weren't causing enough suffering already.",
-    tech: ['Time tracking', 'Reporting', 'Automation'],
-    features: ['employee attendance', 'time tracking', 'productivity reporting', 'internal workflow automation'],
-    action: 'VIEW CASE STUDY',
-    private: true,
-  },
-  {
-    id: 'expenses',
-    number: '06',
-    title: 'Company Expense Management',
-    type: 'Freelance / Internal Tool',
-    description: 'money goes in, money goes out, and somehow everyone needs to approve something. made a system for that.',
-    tech: ['Approval workflow', 'Payment tracking', 'Reporting'],
-    features: ['expense requests', 'approval workflow', 'payment tracking', 'company expense reporting'],
-    action: 'VIEW CASE STUDY',
-    private: true,
   },
 ]
 
 export const experiments = [
-  { title: 'Tanjiro vs Muzan', label: 'EXPERIMENT', description: "thought it'd be fun to make a demon slayer game. so i did." },
-  { title: 'Ranked Mental Math Arena', label: 'BUILDING', description: "what if doing basic math felt like playing ranked? sounds stupid. i'm building it anyway.", detail: 'four players · ELO · leaderboard · email login' },
-  { title: 'AI GitHub Bounty Hunter', label: 'EXPERIMENT', description: "trying to make an ai hunt down github bounties. basically teaching a robot to look for work because i can't be bothered." },
+  { title: 'Tanjiro vs Muzan', label: 'EXPERIMENT', description: 'demon slayer game. that’s it.' },
+  { title: 'Ranked Mental Math Arena', label: 'BUILDING', description: 'ranked mode, but for basic math.' },
+  { title: 'AI GitHub Bounty Hunter', label: 'EXPERIMENT', description: 'teaching a robot to look for work.' },
 ]
 
-export const experience: ExperienceItem[] = [
+export const workItems = [
   {
+    number: '01',
     period: 'Apr 2026 — Present',
     company: 'Viettel High Tech',
     role: 'Software Engineer',
-    description: 'working on real-time software systems, building interfaces, dealing with lots of data, and trying to make things run faster without breaking everything else.',
-    highlights: ['complex Flutter UI', 'real-time data visualization', 'NATS-based realtime communication', 'reusable Flutter SDK components', 'code review + requirement analysis', 'performance optimization'],
-    metric: '15 → 45 FPS',
+    projects: [
+      { title: 'Battlefield Management System', bullets: ['optimized complex UI and tactical map rendering', 'real-time data visualization', 'code review + requirement analysis', 'complex Flutter UI'], metric: '15 → 45 FPS' },
+      { title: 'Flutter SDK', bullets: ['researched existing SDK approaches and internal requirements', "designed the SDK's base architecture", 'built reusable foundations for multiple projects', 'designed extension points so consumers can customize behavior'] },
+    ],
   },
   {
+    number: '02',
     period: 'Jun 2025 — Apr 2026',
     company: 'Sun Asterisk',
     role: 'Frontend Developer / Trainer',
-    description: "wrote frontend code, worked with other developers, and occasionally tried to explain why something wasn't working.",
-    highlights: ['frontend development', 'React applications', 'frontend architecture', 'developer training', 'mentoring / knowledge sharing'],
+    projects: [
+      { title: 'Resource Allocation Platform', bullets: ['frontend development', "reviewed the existing team's interface implementation", 'helped analyze and improve the previous UI structure'] },
+      { title: 'Mentoring Interns & Freshers', bullets: ['Python', 'ReactJS'] },
+    ],
   },
   {
+    number: '03',
     period: 'Aug 2024 — Jun 2025',
     company: 'Missing Corner',
     role: 'Frontend Developer',
-    description: 'built web interfaces, fixed bugs, refactored components, and did the usual frontend developer things.',
-    highlights: ['CMS interfaces', 'reusable UI components', 'Kanban workflows', 'frontend refactoring'],
+    projects: [
+      { title: 'Low-code Platform', bullets: ['rebuilt existing components', 'upgraded the UI library', 'pushed the project toward a more reusable component architecture'] },
+    ],
   },
   {
-    period: 'Nov 2023 — Oct 2024',
-    company: 'GDG HANU',
-    role: 'Full-stack Developer',
-    description: "where i spent a lot of time figuring out how things worked. and sometimes why they didn't.",
-    tech: ['Vue', 'Nuxt', 'NestJS', 'PostgreSQL'],
+    number: '04',
+    period: 'Freelance',
+    company: 'Freelance',
+    role: '',
+    freelance: true,
+    projects: [
+      { title: 'E-commerce Revenue Management' },
+      { title: 'Employee Attendance Management' },
+      { title: 'Company Expense Management' },
+    ],
   },
 ]
 

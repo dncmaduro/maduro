@@ -1,6 +1,6 @@
 import type { SimpleIcon } from 'simple-icons'
 
-export type Page = 'home' | 'projects' | 'experience' | 'about' | 'contact'
+export type Page = 'home' | 'work' | 'experiments' | 'about' | 'contact'
 
 export type CatState = 'idle' | 'walking' | 'running' | 'jumping' | 'sitting' | 'sleeping' | 'restless'
 
@@ -19,14 +19,19 @@ export type Project = {
   private?: boolean
 }
 
-export type ExperienceItem = {
+export type WorkProject = {
+  title: string
+  bullets?: string[]
+  metric?: string
+}
+
+export type WorkItem = {
+  number: string
   period: string
   company: string
   role: string
-  description: string
-  highlights?: string[]
-  tech?: string[]
-  metric?: string
+  projects: WorkProject[]
+  freelance?: boolean
 }
 
 export type ToolboxItem = {

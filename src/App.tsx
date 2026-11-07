@@ -7,10 +7,18 @@ import type { CatState, Page } from './types'
 
 type Point = { x: number; y: number }
 
+const internalPages: Page[] = ['work', 'experiments', 'about', 'contact']
+
 const pageFromPath = (path: string): Page => {
-  const candidate = path.replace(/^\//, '') as Page
-  return ['projects', 'experience', 'about', 'contact'].includes(candidate) ? candidate : 'home'
+  const candidate = path.replace(/^\/+|\/+$/g, '')
+  if (candidate === 'projects' || candidate === 'experience' || candidate === 'work') return 'work'
+  if (candidate === 'experiments') return 'experiments'
+  if (candidate === 'about') return 'about'
+  if (candidate === 'contact') return 'contact'
+  return 'home'
 }
+
+const pathForPage = (page: Page) => page === 'home' ? '/' : `/${page}`
 
 const pointFromElement = (element: HTMLElement | null): Point | null => {
   if (!element) return null
@@ -21,7 +29,28 @@ const pointFromElement = (element: HTMLElement | null): Point | null => {
 const pointAboveTab = (element: HTMLElement | null): Point | null => {
   if (!element) return null
   const rect = element.getBoundingClientRect()
-  return { x: rect.left + rect.width / 2 + window.scrollX, y: rect.top - 22 + window.scrollY }
+  return { x: rect.left + rect.width / 2, y: rect.top - 22 }
+}
+
+const cloneHomeCard = (box: HTMLElement) => {
+  const rect = box.getBoundingClientRect()
+  const clone = box.cloneNode(true) as HTMLElement
+  clone.classList.add('home-card-transition-clone')
+  Object.assign(clone.style, {
+    left: `${rect.left}px`,
+    top: `${rect.top}px`,
+    width: `${rect.width}px`,
+    height: `${rect.height}px`,
+  })
+  document.body.appendChild(clone)
+  return clone
+}
+
+const createPageTransitionFrame = () => {
+  const frame = document.createElement('div')
+  frame.className = 'page-transition-frame'
+  document.body.appendChild(frame)
+  return frame
 }
 
 export default function App() {
@@ -36,11 +65,15 @@ export default function App() {
   const idleTimerRef = useRef<number | undefined>(undefined)
   const transitionLockRef = useRef(false)
 
-  const updateUrl = useCallback((nextPage: Page, replace = false) => {
-    const nextPath = nextPage === 'home' ? '/' : `/${nextPage}`
-    if (window.location.pathname !== nextPath) {
-      window.history[replace ? 'replaceState' : 'pushState']({}, '', nextPath)
-    }
+  const updateUrl = useCallback((nextPage: Page) => {
+    const nextPath = pathForPage(nextPage)
+    if (window.location.pathname !== nextPath) window.history.pushState({}, '', nextPath)
+  }, [])
+
+  const resetScroll = useCallback(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
   }, [])
 
   const moveCat = useCallback((point: Point | null, duration = 0.55) => {
@@ -57,19 +90,53 @@ export default function App() {
   const goHome = useCallback(() => {
     if (page === 'home' || transitionLockRef.current) return
     transitionLockRef.current = true
+    setCatLocked(true)
     setCatState('running')
-    const backPoint = { x: 72 + window.scrollX, y: 82 + window.scrollY }
-    moveCat(backPoint, 0.32)
+
+    const returningPage = page
+    const outgoing = document.querySelector('.page-content')
+    if (outgoing) gsap.to(outgoing, { opacity: 0, y: 12, duration: 0.18, ease: 'power1.in' })
+    const frame = createPageTransitionFrame()
+
     window.setTimeout(() => {
       setPage('home')
       updateUrl('home')
-      setCatTarget(null)
-      setCatLocked(false)
-      setCatPosition(pointerRef.current)
-      setCatState('walking')
-      transitionLockRef.current = false
-    }, 300)
-  }, [moveCat, page, updateUrl])
+      resetScroll()
+
+      window.setTimeout(() => {
+        const box = document.querySelector(`[data-target="${returningPage}"]`) as HTMLElement | null
+        const target = box?.querySelector('.energy-spark') as HTMLElement | null
+        if (!box) {
+          frame.remove()
+          setCatTarget(null)
+          setCatPosition(pointerRef.current)
+          setCatLocked(false)
+          setCatState('walking')
+          transitionLockRef.current = false
+          return
+        }
+        const rect = box.getBoundingClientRect()
+        moveCat(pointFromElement(target), 0.38)
+        gsap.to(frame, {
+          left: rect.left,
+          top: rect.top,
+          width: rect.width,
+          height: rect.height,
+          opacity: 0,
+          duration: 0.56,
+          ease: 'power3.inOut',
+          onComplete: () => {
+            frame.remove()
+            setCatTarget(null)
+            setCatPosition(pointerRef.current)
+            setCatLocked(false)
+            setCatState('walking')
+            transitionLockRef.current = false
+          },
+        })
+      }, 60)
+    }, 220)
+  }, [moveCat, page, resetScroll, updateUrl])
 
   const goToInternal = useCallback((nextPage: Page, tab: HTMLElement | null) => {
     if (nextPage === 'home') {
@@ -81,39 +148,69 @@ export default function App() {
     transitionLockRef.current = true
     setCatLocked(true)
     setCatState('jumping')
-    moveCat(destination, 0.42)
+    moveCat(destination, 0.48)
+    const outgoing = document.querySelector('.page-content')
+    if (outgoing) gsap.to(outgoing, { opacity: 0, y: 12, duration: 0.18, ease: 'power1.in' })
     window.setTimeout(() => {
+      resetScroll()
       setPage(nextPage)
       updateUrl(nextPage)
       setCatState('sitting')
       transitionLockRef.current = false
-    }, 340)
-  }, [goHome, moveCat, updateUrl])
+    }, 360)
+  }, [goHome, moveCat, resetScroll, updateUrl])
 
   const openFromHome = useCallback((nextPageString: string, target: HTMLElement | null) => {
     const nextPage = nextPageString as Page
-    if (!['projects', 'experience', 'about', 'contact'].includes(nextPage) || transitionLockRef.current) return
+    if (!internalPages.includes(nextPage) || transitionLockRef.current) return
+
     const box = target?.closest('.home-box') as HTMLElement | null
     const destination = pointFromElement(target)
+    const clone = box ? cloneHomeCard(box) : null
+    if (box) box.style.visibility = 'hidden'
+
     transitionLockRef.current = true
     setCatLocked(true)
     setCatState('running')
-    moveCat(destination, 0.56)
-    if (box) {
-      gsap.timeline().to(box, { x: -3, duration: 0.045, repeat: 5, yoyo: true, ease: 'none' }).to(box, { scale: 1.02, duration: 0.14, ease: 'power2.out' })
+    moveCat(destination, 0.52)
+
+    const timeline = gsap.timeline({
+      onComplete: () => {
+        clone?.remove()
+        setCatState('sitting')
+        transitionLockRef.current = false
+      },
+    })
+    if (clone) {
+      timeline.to(clone, {
+        left: 0,
+        top: 0,
+        width: window.innerWidth,
+        height: window.innerHeight,
+        borderWidth: 3,
+        boxShadow: 'none',
+        duration: 0.78,
+        ease: 'power3.inOut',
+      })
     }
+
     window.setTimeout(() => {
+      resetScroll()
       setPage(nextPage)
       updateUrl(nextPage)
-      transitionLockRef.current = false
-      window.setTimeout(() => {
-        const tabPoint = pointAboveTab(document.querySelector(`[data-cat-tab="${nextPage}"]`))
-        setCatState('running')
-        moveCat(tabPoint, 0.5)
-        window.setTimeout(() => setCatState('sitting'), 500)
-      }, 50)
-    }, 700)
-  }, [moveCat, updateUrl])
+    }, 430)
+
+    window.setTimeout(() => {
+      const tabPoint = pointAboveTab(document.querySelector(`[data-cat-tab="${nextPage}"]`))
+      setCatState('running')
+      moveCat(tabPoint, 0.46)
+    }, 520)
+  }, [moveCat, resetScroll, updateUrl])
+
+  useEffect(() => {
+    const canonicalPath = pathForPage(page)
+    if (window.location.pathname !== canonicalPath) window.history.replaceState({}, '', canonicalPath)
+  }, [page])
 
   useEffect(() => {
     const onPopState = () => {
@@ -123,20 +220,24 @@ export default function App() {
       setCatLocked(nextPage !== 'home')
       setCatTarget(null)
       setCatState(nextPage === 'home' ? 'idle' : 'sitting')
+      resetScroll()
       window.setTimeout(() => {
         if (nextPage !== 'home') moveCat(pointAboveTab(document.querySelector(`[data-cat-tab="${nextPage}"]`)), 0.25)
+        else setCatPosition(pointerRef.current)
       }, 40)
     }
     window.addEventListener('popstate', onPopState)
     return () => window.removeEventListener('popstate', onPopState)
-  }, [moveCat])
+  }, [moveCat, resetScroll])
 
   useEffect(() => {
-    document.documentElement.scrollTop = 0
-    if (page !== 'home' && !catTarget) {
-      const timer = window.setTimeout(() => moveCat(pointAboveTab(document.querySelector(`[data-cat-tab="${page}"]`)), 0.25), 40)
-      return () => window.clearTimeout(timer)
-    }
+    resetScroll()
+  }, [page, resetScroll])
+
+  useEffect(() => {
+    if (page === 'home' || catTarget) return
+    const timer = window.setTimeout(() => moveCat(pointAboveTab(document.querySelector(`[data-cat-tab="${page}"]`)), 0.25), 40)
+    return () => window.clearTimeout(timer)
   }, [catTarget, moveCat, page])
 
   useEffect(() => {
@@ -162,7 +263,7 @@ export default function App() {
         goHome()
         return
       }
-      const keyed: Record<string, Page> = { '1': 'projects', '2': 'experience', '3': 'about', '4': 'contact' }
+      const keyed: Record<string, Page> = { '1': 'work', '2': 'experiments', '3': 'about', '4': 'contact' }
       const nextPage = keyed[event.key]
       if (!nextPage) return
       const tab = document.querySelector(`[data-cat-tab="${nextPage}"]`) as HTMLElement | null
@@ -178,7 +279,7 @@ export default function App() {
       <a className="skip-link" href="#page-title">skip to content</a>
       <div className="page-grain" aria-hidden="true" />
       {page === 'home' ? <HomePage onNavigate={openFromHome} /> : <InteriorPage page={page} onNavigate={goToInternal} onBack={goHome} />}
-      <PixelCat state={catState} position={catPosition} target={catTarget} onEasterEgg={showEasterEgg} documentAnchored={page !== 'home'} />
+      <PixelCat state={catState} position={catPosition} target={catTarget} onEasterEgg={showEasterEgg} />
       {easterEgg && <div className="cat-speech" aria-live="polite">stop clicking me.<br />i&apos;m working.</div>}
       <div className="keyboard-hint" aria-hidden="true">1—4 navigate · esc home</div>
     </div>
