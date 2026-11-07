@@ -70,7 +70,7 @@ function WorkCard({ item }: { item: WorkItem }) {
           <section className="work-project" key={project.title}>
             <h4>{project.title}</h4>
             {project.bullets && <ul className="work-bullets">{project.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>}
-            {project.metric && <div className="work-metric"><span>PERFORMANCE TUNE-UP</span><strong>{project.metric}</strong><small>somehow made it less haunted.</small></div>}
+            {project.metric && <div className="work-metric">→ performance tune-up: <strong>{project.metric}</strong></div>}
           </section>
         ))}
       </div>

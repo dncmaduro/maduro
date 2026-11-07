@@ -143,10 +143,8 @@ a { text-decoration: none; }
 .work-project h4 { margin: 0; font-size: clamp(24px, 3vw, 38px); line-height: .95; font-weight: 400; letter-spacing: -.03em; text-transform: uppercase; }
 .work-bullets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 26px; margin: 17px 0 0; padding: 0 0 0 17px; list-style: none; color: #333; font: 12px/1.45 'IBM Plex Mono', monospace; }
 .work-bullets li::before { content: '→'; display: inline-block; width: 17px; margin-left: -17px; }
-.work-metric { display: flex; flex-wrap: wrap; align-items: baseline; gap: 5px 12px; margin-top: 18px; }
-.work-metric span { flex-basis: 100%; color: var(--gray); font: 600 9px 'IBM Plex Mono', monospace; text-transform: uppercase; }
-.work-metric strong { font: 700 clamp(29px, 3.5vw, 48px)/1 'IBM Plex Mono', monospace; letter-spacing: -.08em; }
-.work-metric small { color: var(--gray); font: 9px 'IBM Plex Mono', monospace; }
+.work-metric { margin-top: 14px; color: #333; font: 12px/1.45 'IBM Plex Mono', monospace; }
+.work-metric strong { font: inherit; font-weight: 400; letter-spacing: normal; }
 .portfolio-card--freelance .work-project-list { margin-top: 18px; }
 .portfolio-card--freelance .work-project { display: flex; justify-content: space-between; gap: 20px; padding: 17px 0; }
 .portfolio-card--freelance .work-project h4 { font-size: clamp(21px, 2.7vw, 32px); }
