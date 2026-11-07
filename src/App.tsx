@@ -32,6 +32,8 @@ const pointAboveTab = (element: HTMLElement | null): Point | null => {
   return { x: rect.left + rect.width / 2, y: rect.top - 22 }
 }
 
+const findTab = (page: Page) => document.querySelector(`[data-cat-tab="${page}"]`) as HTMLElement | null
+
 const cloneInteriorPage = (pageRoot: HTMLElement) => {
   const rect = pageRoot.getBoundingClientRect()
   const clone = pageRoot.cloneNode(true) as HTMLElement
@@ -44,6 +46,7 @@ const cloneInteriorPage = (pageRoot: HTMLElement) => {
     maxWidth: 'none',
     margin: '0',
   })
+  clone.querySelectorAll('.pixel-cat').forEach((cat) => cat.remove())
   document.body.appendChild(clone)
   return clone
 }
@@ -59,6 +62,8 @@ export default function App() {
   const pointerRef = useRef<Point>(initialPoint)
   const idleTimerRef = useRef<number | undefined>(undefined)
   const transitionLockRef = useRef(false)
+  const [catAnchor, setCatAnchor] = useState<HTMLElement | null>(null)
+  const pendingAttachPageRef = useRef<Page | null>(page === 'home' ? null : page)
 
   const updateUrl = useCallback((nextPage: Page) => {
     const nextPath = pathForPage(nextPage)
@@ -85,6 +90,8 @@ export default function App() {
   const goHome = useCallback(() => {
     if (page === 'home' || transitionLockRef.current) return
     transitionLockRef.current = true
+    pendingAttachPageRef.current = null
+    setCatAnchor(null)
     setCatLocked(true)
     setCatState('running')
 
@@ -149,6 +156,8 @@ export default function App() {
     const destination = pointAboveTab(tab)
     if (transitionLockRef.current) return
     transitionLockRef.current = true
+    pendingAttachPageRef.current = null
+    setCatAnchor(null)
     setCatLocked(true)
     setCatState('jumping')
     moveCat(destination, 0.48)
@@ -158,8 +167,11 @@ export default function App() {
       resetScroll()
       setPage(nextPage)
       updateUrl(nextPage)
-      setCatState('sitting')
-      transitionLockRef.current = false
+      window.setTimeout(() => {
+        setCatAnchor(tab ?? findTab(nextPage))
+        setCatState('sitting')
+        transitionLockRef.current = false
+      }, 170)
     }, 360)
   }, [goHome, moveCat, resetScroll, updateUrl])
 
@@ -173,6 +185,8 @@ export default function App() {
     if (box) box.style.visibility = 'hidden'
 
     transitionLockRef.current = true
+    pendingAttachPageRef.current = null
+    setCatAnchor(null)
     setCatLocked(true)
     setCatState('running')
     moveCat(destination, 0.52)
@@ -184,6 +198,7 @@ export default function App() {
       window.setTimeout(() => {
         const pageRoot = document.querySelector('.interior-page') as HTMLElement | null
         if (!pageRoot || !cardRect) {
+          setCatAnchor(findTab(nextPage))
           setCatState('sitting')
           transitionLockRef.current = false
           return
@@ -217,6 +232,7 @@ export default function App() {
             setCatState('running')
             moveCat(tabPoint, 0.46)
             window.setTimeout(() => {
+              setCatAnchor(findTab(nextPage))
               setCatState('sitting')
               transitionLockRef.current = false
             }, 470)
@@ -235,13 +251,15 @@ export default function App() {
     const onPopState = () => {
       const nextPage = pageFromPath(window.location.pathname)
       transitionLockRef.current = false
+      pendingAttachPageRef.current = nextPage === 'home' ? null : nextPage
+      setCatAnchor(null)
       setPage(nextPage)
       setCatLocked(nextPage !== 'home')
       setCatTarget(null)
       setCatState(nextPage === 'home' ? 'idle' : 'sitting')
       resetScroll()
       window.setTimeout(() => {
-        if (nextPage !== 'home') moveCat(pointAboveTab(document.querySelector(`[data-cat-tab="${nextPage}"]`)), 0.25)
+        if (nextPage !== 'home') moveCat(pointAboveTab(findTab(nextPage)), 0.25)
         else setCatPosition(pointerRef.current)
       }, 40)
     }
@@ -254,10 +272,16 @@ export default function App() {
   }, [page, resetScroll])
 
   useEffect(() => {
-    if (page === 'home' || catTarget) return
-    const timer = window.setTimeout(() => moveCat(pointAboveTab(document.querySelector(`[data-cat-tab="${page}"]`)), 0.25), 40)
+    if (page === 'home' || catAnchor || pendingAttachPageRef.current !== page) return
+    pendingAttachPageRef.current = null
+    const timer = window.setTimeout(() => {
+      const tab = findTab(page)
+      if (!tab) return
+      setCatAnchor(tab)
+      setCatState('sitting')
+    }, 40)
     return () => window.clearTimeout(timer)
-  }, [catTarget, moveCat, page])
+  }, [catAnchor, page])
 
   useEffect(() => {
     const onPointerMove = (event: PointerEvent) => {
@@ -298,7 +322,7 @@ export default function App() {
       <a className="skip-link" href="#page-title">skip to content</a>
       <div className="page-grain" aria-hidden="true" />
       {page === 'home' ? <HomePage onNavigate={openFromHome} /> : <InteriorPage page={page} onNavigate={goToInternal} onBack={goHome} />}
-      <PixelCat state={catState} position={catPosition} target={catTarget} onEasterEgg={showEasterEgg} />
+      <PixelCat state={catState} position={catPosition} target={catTarget} anchor={catAnchor} attached={Boolean(catAnchor)} onEasterEgg={showEasterEgg} />
       {easterEgg && <div className="cat-speech" aria-live="polite">stop clicking me.<br />i&apos;m working.</div>}
       <div className="keyboard-hint" aria-hidden="true">1—4 navigate · esc home</div>
     </div>

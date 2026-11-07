@@ -10,15 +10,17 @@ type PixelCatProps = {
   position: Point
   target?: (Point & { key: number; duration?: number }) | null
   onEasterEgg?: () => void
+  anchor?: HTMLElement | null
+  attached?: boolean
 }
 
-export function PixelCat({ state, position, target, onEasterEgg }: PixelCatProps) {
+export function PixelCat({ state, position, target, onEasterEgg, anchor = null, attached = false }: PixelCatProps) {
   const catRef = useRef<HTMLDivElement>(null)
   const lastClickRef = useRef(0)
   const clickCountRef = useRef(0)
 
   useEffect(() => {
-    if (!catRef.current) return
+    if (!catRef.current || attached) return
     gsap.killTweensOf(catRef.current)
     if (target) {
       gsap.to(catRef.current, {
@@ -35,7 +37,7 @@ export function PixelCat({ state, position, target, onEasterEgg }: PixelCatProps
       duration: 0.15,
       ease: 'power2.out',
     })
-  }, [position, target])
+  }, [position, target, attached])
 
   useEffect(() => {
     const onDocumentClick = (event: MouseEvent) => {
@@ -56,7 +58,7 @@ export function PixelCat({ state, position, target, onEasterEgg }: PixelCatProps
   }, [onEasterEgg])
 
   const cat = (
-    <div ref={catRef} className={`pixel-cat pixel-cat--${state}`} aria-hidden="true">
+    <div ref={catRef} className={`pixel-cat pixel-cat--${state} ${attached ? 'pixel-cat--attached' : ''}`} aria-hidden="true">
       <span className="cat-shadow" />
       <span className="cat-tail" />
       <span className="cat-body">
@@ -69,5 +71,5 @@ export function PixelCat({ state, position, target, onEasterEgg }: PixelCatProps
     </div>
   )
 
-  return createPortal(cat, document.body)
+  return createPortal(cat, anchor ?? document.body)
 }
