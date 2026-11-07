@@ -1,7 +1,7 @@
 import { navItems } from '../data/siteData'
 
 type HomePageProps = {
-  onNavigate: (page: string, bowl: HTMLElement | null) => void
+  onNavigate: (page: string, target: HTMLElement | null) => void
 }
 
 export function HomePage({ onNavigate }: HomePageProps) {
@@ -18,15 +18,15 @@ export function HomePage({ onNavigate }: HomePageProps) {
           <p>could be something useful, could be something completely stupid. honestly, i don&apos;t really care.</p>
           <p>if it sounds fun, i&apos;ll probably build it.</p>
         </div>
-        <div className="home-note"><span className="blink-dot" /> anyway, pick a box. the cat&apos;s hungry.</div>
+        <div className="home-note"><span className="blink-dot" /> anyway, pick a box. the cat has too much energy.</div>
       </section>
       <section className="home-boxes" aria-label="Portfolio sections">
         {navItems.map((item) => (
-          <button className={`home-box home-box--${item.id}`} key={item.id} type="button" onClick={(event) => onNavigate(item.id, event.currentTarget.querySelector('.food-bowl'))}>
+          <button className={`home-box home-box--${item.id}`} key={item.id} type="button" onClick={(event) => onNavigate(item.id, event.currentTarget.querySelector('.energy-spark'))}>
             <span className="box-topline"><span>0{item.plate}</span><span>{item.detail}</span></span>
-            <span className="food-bowl" data-bowl={item.id} aria-hidden="true"><span className="bowl-food">•••</span></span>
+            <span className="energy-spark" data-target={item.id} aria-hidden="true"><span className="spark-mark">✦</span></span>
             <span className="box-label">{item.label}</span>
-            <span className="box-caption">open / inspect / regret</span>
+            <span className="box-caption">open / inspect / cause chaos</span>
             <span className="box-screw box-screw--tl" /><span className="box-screw box-screw--br" />
           </button>
         ))}

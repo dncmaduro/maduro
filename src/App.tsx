@@ -90,11 +90,11 @@ export default function App() {
     }, 340)
   }, [goHome, moveCat, updateUrl])
 
-  const openFromHome = useCallback((nextPageString: string, bowl: HTMLElement | null) => {
+  const openFromHome = useCallback((nextPageString: string, target: HTMLElement | null) => {
     const nextPage = nextPageString as Page
     if (!['projects', 'experience', 'about', 'contact'].includes(nextPage) || transitionLockRef.current) return
-    const box = bowl?.closest('.home-box') as HTMLElement | null
-    const destination = pointFromElement(bowl)
+    const box = target?.closest('.home-box') as HTMLElement | null
+    const destination = pointFromElement(target)
     transitionLockRef.current = true
     setCatLocked(true)
     setCatState('running')
@@ -166,7 +166,7 @@ export default function App() {
       const nextPage = keyed[event.key]
       if (!nextPage) return
       const tab = document.querySelector(`[data-cat-tab="${nextPage}"]`) as HTMLElement | null
-      if (page === 'home') openFromHome(nextPage, document.querySelector(`[data-bowl="${nextPage}"]`))
+      if (page === 'home') openFromHome(nextPage, document.querySelector(`[data-target="${nextPage}"]`))
       else goToInternal(nextPage, tab)
     }
     window.addEventListener('keydown', onKeyDown)

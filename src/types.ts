@@ -1,6 +1,6 @@
 export type Page = 'home' | 'projects' | 'experience' | 'about' | 'contact'
 
-export type CatState = 'idle' | 'walking' | 'running' | 'jumping' | 'eating' | 'sitting' | 'sleeping'
+export type CatState = 'idle' | 'walking' | 'running' | 'jumping' | 'sitting' | 'sleeping' | 'restless'
 
 export type Project = {
   id: string

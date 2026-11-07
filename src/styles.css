@@ -51,9 +51,9 @@ a { text-decoration: none; }
 .box-topline { display: flex; justify-content: space-between; font: 11px 'IBM Plex Mono', monospace; font-weight: 600; }
 .box-label { display: block; margin-top: 108px; font: 700 clamp(18px, 2vw, 24px)/.9 'IBM Plex Mono', monospace; letter-spacing: -.08em; text-transform: uppercase; max-width: 170px; }
 .box-caption { display: block; margin-top: 12px; color: var(--gray); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
-.food-bowl { position: absolute; top: -25px; right: 24px; width: 58px; height: 26px; border: 3px solid var(--black); background: var(--white); box-shadow: 4px 4px 0 var(--black); transform: skewX(-8deg); }
-.food-bowl::after { content: ''; position: absolute; top: 7px; left: 7px; right: 7px; height: 9px; background: var(--black); }
-.bowl-food { position: relative; z-index: 1; display: block; margin-top: -4px; color: var(--white); font: 9px monospace; letter-spacing: 6px; transform: skewX(8deg); }
+.energy-spark { position: absolute; top: -29px; right: 25px; display: grid; place-items: center; width: 42px; height: 42px; border: 3px solid var(--black); background: var(--white); box-shadow: 4px 4px 0 var(--black); transform: rotate(45deg); animation: energyPulse .42s steps(2, end) infinite; }
+.spark-mark { display: block; font: 22px/1 Georgia, serif; transform: rotate(-45deg); }
+@keyframes energyPulse { 50% { transform: rotate(45deg) translate(2px, -3px); } }
 .box-screw { position: absolute; width: 7px; height: 7px; background: var(--black); }
 .box-screw--tl { top: 16px; left: 16px; }
 .box-screw--br { bottom: 14px; right: 14px; }
@@ -85,11 +85,14 @@ a { text-decoration: none; }
 .pixel-cat--walking .cat-body { animation: catBob .33s steps(2, end) infinite; }
 .pixel-cat--running .cat-body { animation: catBob .18s steps(2, end) infinite; }
 .pixel-cat--running .cat-tail { animation: tailWag .15s steps(2, end) infinite; }
-.pixel-cat--idle .cat-tail, .pixel-cat--eating .cat-tail { animation: tailWag 1.1s steps(2, end) infinite; }
+.pixel-cat--idle .cat-tail { animation: tailWag .55s steps(2, end) infinite; }
+.pixel-cat--sitting .cat-body { animation: catFidget .34s steps(2, end) infinite; }
+.pixel-cat--sitting .cat-tail, .pixel-cat--restless .cat-tail { animation: tailWag .18s steps(2, end) infinite; }
 .pixel-cat--jumping .cat-body { animation: catJump .42s ease-in-out infinite alternate; }
 .pixel-cat--sleeping .cat-body { transform: translateY(5px); }
 @keyframes catBob { 50% { transform: translateY(-4px); } }
 @keyframes catJump { to { transform: translateY(-9px) rotate(-3deg); } }
+@keyframes catFidget { 50% { transform: translateY(-4px) rotate(2deg); } }
 @keyframes tailWag { 50% { transform: rotate(14deg); } }
 .cat-speech { position: fixed; z-index: 32; left: 50%; top: 50%; margin: -62px 0 0 25px; padding: 8px 10px; border: 2px solid var(--black); background: var(--white); box-shadow: 4px 4px 0 var(--black); font: 10px/1.35 'IBM Plex Mono', monospace; text-transform: lowercase; animation: speechIn .18s ease-out both; }
 .cat-speech::before { content: ''; position: absolute; left: -8px; bottom: 8px; width: 9px; height: 9px; border-left: 2px solid var(--black); border-bottom: 2px solid var(--black); background: var(--white); transform: skewX(-25deg); }
@@ -109,7 +112,7 @@ a { text-decoration: none; }
 .tab:hover, .tab:focus-visible { transform: translateY(-2px); outline: none; }
 .tab--active { background: var(--white); color: var(--black); box-shadow: 3px 3px 0 var(--black); }
 .tab-number { color: var(--gray); font-size: 10px; }
-.tab-food { position: absolute; right: 5px; top: -9px; font: 10px monospace; letter-spacing: 1px; }
+.tab-spark { position: absolute; right: 5px; top: -13px; font: 18px/1 Georgia, serif; animation: energyPulse .42s steps(2, end) infinite; }
 .page-content { animation: pageRise .42s ease-out both; }
 @keyframes pageRise { from { opacity: 0; transform: translateY(17px); } to { opacity: 1; transform: translateY(0); } }
 .page-heading { padding: clamp(78px, 10vw, 130px) 0 76px; border-bottom: 1px solid var(--black); }
@@ -220,7 +223,7 @@ a { text-decoration: none; }
 
 @media (max-width: 640px) {
   .page-shell { width: min(100% - 28px, 1320px); }
-  .home-page { padding-top: 16px; }.home-topline { align-items: flex-start; }.eyebrow--right { max-width: 120px; text-align: right; }.home-hero { padding: 88px 0 60px; }.home-hero h1 { font-size: clamp(58px, 17vw, 94px); }.hero-copy { font-size: 23px; }.home-boxes { grid-template-columns: 1fr 1fr; gap: 13px; }.home-box { min-height: 185px !important; padding: 13px; box-shadow: 5px 5px 0 var(--black); }.home-box::before { top: 13px; left: -7px; }.box-label { margin-top: 78px; font-size: 18px; }.box-caption { font-size: 8px; }.food-bowl { right: 10px; transform: scale(.8) skewX(-8deg); transform-origin: right center; }.home-aside { margin-top: 35px; }.ascii-mark { display: none; }
+  .home-page { padding-top: 16px; }.home-topline { align-items: flex-start; }.eyebrow--right { max-width: 120px; text-align: right; }.home-hero { padding: 88px 0 60px; }.home-hero h1 { font-size: clamp(58px, 17vw, 94px); }.hero-copy { font-size: 23px; }.home-boxes { grid-template-columns: 1fr 1fr; gap: 13px; }.home-box { min-height: 185px !important; padding: 13px; box-shadow: 5px 5px 0 var(--black); }.home-box::before { top: 13px; left: -7px; }.box-label { margin-top: 78px; font-size: 18px; }.box-caption { font-size: 8px; }.energy-spark { right: 10px; transform: scale(.8) rotate(45deg); transform-origin: right center; }.home-aside { margin-top: 35px; }.ascii-mark { display: none; }
   .pixel-cat { display: none; }.keyboard-hint { display: none; }
   .interior-page { padding-top: 14px; }.interior-header { gap: 8px; }.back-button { font-size: 10px; }.tab { min-height: 46px; padding: 12px 13px; font-size: 11px; }.page-heading { padding: 66px 0 52px; }.page-heading h1 { font-size: clamp(51px, 15vw, 82px); }.page-subtitle { font-size: 17px; }
   .project-grid { grid-template-columns: 1fr; padding-bottom: 76px; }.project-preview { height: 145px; }.project-card h3 { font-size: 36px; }.project-card p { font-size: 18px; }.feature-list { font-size: 9px; }.experiments-section h2, .toolbox-section h2, .into-section h2 { font-size: 45px; }.experiment-item { grid-template-columns: 32px minmax(0, 1fr); gap: 11px; }.experiment-label { grid-column: 2; justify-self: start; margin-top: 4px; }.experiment-item h3 { font-size: 27px; }.experiment-item p { font-size: 17px; }
