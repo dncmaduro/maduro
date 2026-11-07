@@ -32,25 +32,11 @@ const pointAboveTab = (element: HTMLElement | null): Point | null => {
   return { x: rect.left + rect.width / 2, y: rect.top - 22 }
 }
 
-const cloneHomeCard = (box: HTMLElement) => {
-  const rect = box.getBoundingClientRect()
-  const clone = box.cloneNode(true) as HTMLElement
-  clone.classList.add('home-card-transition-clone')
-  Object.assign(clone.style, {
-    left: `${rect.left}px`,
-    top: `${rect.top}px`,
-    width: `${rect.width}px`,
-    height: `${rect.height}px`,
-  })
+const cloneInteriorPage = (pageRoot: HTMLElement) => {
+  const clone = pageRoot.cloneNode(true) as HTMLElement
+  clone.classList.add('page-transition-page-clone')
   document.body.appendChild(clone)
   return clone
-}
-
-const createPageTransitionFrame = () => {
-  const frame = document.createElement('div')
-  frame.className = 'page-transition-frame'
-  document.body.appendChild(frame)
-  return frame
 }
 
 export default function App() {
@@ -94,20 +80,19 @@ export default function App() {
     setCatState('running')
 
     const returningPage = page
-    const outgoing = document.querySelector('.page-content')
-    if (outgoing) gsap.to(outgoing, { opacity: 0, y: 12, duration: 0.18, ease: 'power1.in' })
-    const frame = createPageTransitionFrame()
+    resetScroll()
+    const pageRoot = document.querySelector('.interior-page') as HTMLElement | null
+    const pageClone = pageRoot ? cloneInteriorPage(pageRoot) : null
 
     window.setTimeout(() => {
       setPage('home')
       updateUrl('home')
-      resetScroll()
 
       window.setTimeout(() => {
-        const box = document.querySelector(`[data-target="${returningPage}"]`) as HTMLElement | null
-        const target = box?.querySelector('.energy-spark') as HTMLElement | null
+        const target = document.querySelector(`[data-target="${returningPage}"]`) as HTMLElement | null
+        const box = target?.closest('.home-box') as HTMLElement | null
         if (!box) {
-          frame.remove()
+          pageClone?.remove()
           setCatTarget(null)
           setCatPosition(pointerRef.current)
           setCatLocked(false)
@@ -117,16 +102,24 @@ export default function App() {
         }
         const rect = box.getBoundingClientRect()
         moveCat(pointFromElement(target), 0.38)
-        gsap.to(frame, {
-          left: rect.left,
-          top: rect.top,
-          width: rect.width,
-          height: rect.height,
+        if (!pageClone) {
+          setCatTarget(null)
+          setCatPosition(pointerRef.current)
+          setCatLocked(false)
+          setCatState('walking')
+          transitionLockRef.current = false
+          return
+        }
+        gsap.to(pageClone, {
+          x: rect.left,
+          y: rect.top,
+          scaleX: rect.width / window.innerWidth,
+          scaleY: rect.height / window.innerHeight,
           opacity: 0,
           duration: 0.56,
           ease: 'power3.inOut',
           onComplete: () => {
-            frame.remove()
+            pageClone.remove()
             setCatTarget(null)
             setCatPosition(pointerRef.current)
             setCatLocked(false)
@@ -166,7 +159,7 @@ export default function App() {
 
     const box = target?.closest('.home-box') as HTMLElement | null
     const destination = pointFromElement(target)
-    const clone = box ? cloneHomeCard(box) : null
+    const cardRect = box?.getBoundingClientRect() ?? null
     if (box) box.style.visibility = 'hidden'
 
     transitionLockRef.current = true
@@ -174,31 +167,47 @@ export default function App() {
     setCatState('running')
     moveCat(destination, 0.52)
 
-    const timeline = gsap.timeline({
-      onComplete: () => {
-        clone?.remove()
-        setCatState('sitting')
-        transitionLockRef.current = false
-      },
-    })
-    if (clone) {
-      timeline.to(clone, {
-        left: 0,
-        top: 0,
-        width: window.innerWidth,
-        height: window.innerHeight,
-        borderWidth: 3,
-        boxShadow: 'none',
-        duration: 0.78,
-        ease: 'power3.inOut',
-      })
-    }
-
     window.setTimeout(() => {
       resetScroll()
       setPage(nextPage)
       updateUrl(nextPage)
-    }, 430)
+      window.setTimeout(() => {
+        const pageRoot = document.querySelector('.interior-page') as HTMLElement | null
+        if (!pageRoot || !cardRect) {
+          setCatState('sitting')
+          transitionLockRef.current = false
+          return
+        }
+        gsap.set(pageRoot, {
+          position: 'fixed',
+          left: cardRect.left,
+          top: cardRect.top,
+          width: window.innerWidth,
+          height: window.innerHeight,
+          maxWidth: 'none',
+          margin: 0,
+          overflow: 'hidden',
+          transformOrigin: 'top left',
+          scaleX: cardRect.width / window.innerWidth,
+          scaleY: cardRect.height / window.innerHeight,
+          zIndex: 80,
+          background: 'var(--paper)',
+        })
+        gsap.to(pageRoot, {
+          left: 0,
+          top: 0,
+          scaleX: 1,
+          scaleY: 1,
+          duration: 0.72,
+          ease: 'power3.inOut',
+          onComplete: () => {
+            gsap.set(pageRoot, { clearProps: 'position,left,top,width,height,maxWidth,margin,overflow,transformOrigin,transform,zIndex,background' })
+            setCatState('sitting')
+            transitionLockRef.current = false
+          },
+        })
+      }, 40)
+    }, 360)
 
     window.setTimeout(() => {
       const tabPoint = pointAboveTab(document.querySelector(`[data-cat-tab="${nextPage}"]`))

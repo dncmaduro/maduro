@@ -124,8 +124,7 @@ a { text-decoration: none; }
 .site-footer { display: flex; justify-content: space-between; gap: 20px; border-top: var(--line); margin-top: 90px; padding-top: 12px; font-size: 9px; text-transform: uppercase; }
 
 /* page transitions */
-.home-card-transition-clone { position: fixed !important; z-index: 80; margin: 0 !important; pointer-events: none; transform: none !important; transition: none !important; }
-.page-transition-frame { position: fixed; z-index: 80; left: 0; top: 0; width: 100vw; height: 100vh; border: 3px solid var(--black); background: var(--paper); box-shadow: 8px 8px 0 var(--black); pointer-events: none; }
+.page-transition-page-clone { position: fixed !important; z-index: 80 !important; left: 0; top: 0; width: 100vw !important; height: 100vh !important; max-width: none !important; margin: 0 !important; overflow: hidden !important; background: var(--paper) !important; pointer-events: none !important; transform: none; transform-origin: top left; }
 
 /* shared work / experiment cards */
 .work-content, .experiments-content { padding: 28px 0 0; }
