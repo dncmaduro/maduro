@@ -127,12 +127,16 @@ export default function App() {
           return
         }
         const pageRect = pageClone.getBoundingClientRect()
+        const pageWidth = pageRect.width
+        const pageHeight = window.innerHeight
+        const cardCenterX = rect.left + rect.width / 2
+        const cardCenterY = rect.top + rect.height / 2
         gsap.to(pageClone, {
-          x: rect.left - pageRect.left,
-          y: rect.top - pageRect.top,
+          left: cardCenterX - pageWidth / 2,
+          top: cardCenterY - pageHeight / 2,
           scaleX: rect.width / pageRect.width,
-          scaleY: rect.height / window.innerHeight,
-          opacity: 0,
+          scaleY: rect.height / pageHeight,
+          transformOrigin: 'center center',
           duration: 0.56,
           ease: 'power3.inOut',
           onComplete: () => {
@@ -182,7 +186,6 @@ export default function App() {
     const box = target?.closest('.home-box') as HTMLElement | null
     const destination = pointFromElement(target)
     const cardRect = box?.getBoundingClientRect() ?? null
-    if (box) box.style.visibility = 'hidden'
 
     transitionLockRef.current = true
     pendingAttachPageRef.current = null
@@ -204,18 +207,22 @@ export default function App() {
           return
         }
         const pageRect = pageRoot.getBoundingClientRect()
+        const pageWidth = pageRect.width
+        const pageHeight = window.innerHeight
+        const cardCenterX = cardRect.left + cardRect.width / 2
+        const cardCenterY = cardRect.top + cardRect.height / 2
         gsap.set(pageRoot, {
           position: 'fixed',
-          left: pageRect.left,
-          top: pageRect.top,
-          width: pageRect.width,
-          height: window.innerHeight,
+          left: cardCenterX - pageWidth / 2,
+          top: cardCenterY - pageHeight / 2,
+          width: pageWidth,
+          height: pageHeight,
           maxWidth: 'none',
           margin: 0,
           overflow: 'hidden',
-          transformOrigin: 'top left',
-          scaleX: cardRect.width / pageRect.width,
-          scaleY: cardRect.height / window.innerHeight,
+          transformOrigin: 'center center',
+          scaleX: cardRect.width / pageWidth,
+          scaleY: cardRect.height / pageHeight,
           zIndex: 80,
           background: 'var(--paper)',
         })
