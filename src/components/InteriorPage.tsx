@@ -12,10 +12,10 @@ type InteriorPageProps = {
 }
 
 const pageCopy = {
-  work: { kicker: '01 / WORK', title: 'places that paid me to code.', subtitle: 'real projects. real deadlines. unfortunately.' },
-  experiments: { kicker: '02 / EXPERIMENTS', title: 'things nobody asked for.', subtitle: 'no client. no ticket. questionable decisions.' },
-  about: { kicker: '03 / CONTEXT', title: "so, who's this guy?", subtitle: 'a little background before you judge the code.' },
-  contact: { kicker: '04 / OPEN PORT', title: 'wanna talk?', subtitle: 'no forms. no captchas. just email me like a normal person.' },
+  work: { kicker: '01 / WORK', title: 'places that paid me to code.' },
+  experiments: { kicker: '02 / EXPERIMENTS', title: 'things nobody asked for.' },
+  about: { kicker: '03 / CONTEXT', title: "so, who's this guy?" },
+  contact: { kicker: '04 / OPEN PORT', title: 'wanna talk?' },
 } as const
 
 export function InteriorPage({ page, onNavigate, onBack }: InteriorPageProps) {
@@ -31,7 +31,6 @@ export function InteriorPage({ page, onNavigate, onBack }: InteriorPageProps) {
         <div className="page-heading">
           <p className="eyebrow">{copy.kicker}</p>
           <h1 id="page-title">{copy.title}</h1>
-          <p className="page-subtitle">{copy.subtitle}</p>
         </div>
         {page === 'work' && <WorkPage onNavigate={onNavigate} />}
         {page === 'experiments' && <ExperimentsPage />}
@@ -158,7 +157,6 @@ function ContactPage() {
         <a className="contact-link" href={links.linkedin} target="_blank" rel="noreferrer"><span>LINKEDIN</span><strong>linkedin ↗</strong></a>
         <a className="contact-link" href={links.stackoverflow} target="_blank" rel="noreferrer"><span>STACK OVERFLOW</span><strong>stack overflow ↗</strong></a>
       </section>
-      <div className="contact-footnote">no forms. no captchas. just email me like a normal person.</div>
     </div>
   )
 }
