@@ -91,7 +91,7 @@ function AboutPage() {
     <div className="about-content">
       <section className="about-intro">
         <div className="about-text">
-          <p>i&apos;m dung tran. a software engineer from vietnam.</p>
+          <p>i&apos;m dung tran. a software engineer from Vietnam.</p>
           <p>i spend most of my day writing code, staring at code, wondering why my code doesn&apos;t work, and then realizing i was the problem all along.</p>
           <p>i mostly work with frontend stuff, but i like messing around with pretty much anything.</p>
           <p>web apps, mobile apps, browser extensions, games, ai stuff... whatever seems interesting at the moment.</p>

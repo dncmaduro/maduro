@@ -21,7 +21,7 @@ export const projects: Project[] = [
     title: 'CrossRoadsInVietnam',
     type: 'Personal / Web Game',
     status: 'In development',
-    description: "made a game about crossing the street in vietnam because apparently doing it in real life wasn't stressful enough.",
+    description: "made a game about crossing the street in Vietnam because apparently doing it in real life wasn't stressful enough.",
     tech: ['React', 'TypeScript', 'Three.js', 'React Three Fiber', 'Rapier'],
     features: ['Vietnamese 3D street environment', 'traffic AI', 'collision system', 'multiple levels', 'ambient + spatial audio', 'pedestrians + vehicle types'],
     demoUrl: '#',
