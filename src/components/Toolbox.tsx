@@ -29,7 +29,7 @@ export function Toolbox({ shelves }: ToolboxProps) {
             </div>
             <div className={`tech-object-row tech-object-row--${shelf.id}`}>
               {shelf.items.map((item) => (
-                <div className="tech-object-wrap" key={item.name} onMouseEnter={() => setHovered(item.name)} onMouseLeave={() => setHovered(null)}>
+                <div className="tech-object-wrap" key={item.name} tabIndex={0} role="group" aria-label={`${item.name}: ${item.flavor}`} onMouseEnter={() => setHovered(item.name)} onMouseLeave={() => setHovered(null)} onFocus={() => setHovered(item.name)} onBlur={() => setHovered(null)}>
                   <div className={`tech-object tech-object--${item.name.toLowerCase().replace(/[^a-z]/g, '-')}`} title={item.name}>
                     <BrandIcon icon={item.icon} />
                   </div>

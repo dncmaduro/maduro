@@ -6,6 +6,7 @@ type PortfolioCardProps = {
   metaRight?: string
   title: string
   description?: string
+  secondaryDescription?: string
   tech?: string[]
   children?: ReactNode
   footer?: ReactNode
@@ -13,7 +14,7 @@ type PortfolioCardProps = {
   className?: string
 }
 
-export function PortfolioCard({ number, meta, metaRight, title, description, tech, children, footer, variant = 'experiment', className = '' }: PortfolioCardProps) {
+export function PortfolioCard({ number, meta, metaRight, title, description, secondaryDescription, tech, children, footer, variant = 'experiment', className = '' }: PortfolioCardProps) {
   return (
     <article className={`portfolio-card portfolio-card--${variant} ${className}`.trim()}>
       <div className="portfolio-card__meta">
@@ -22,6 +23,7 @@ export function PortfolioCard({ number, meta, metaRight, title, description, tec
       </div>
       <h3>{title}</h3>
       {description && <p className="portfolio-card__description">{description}</p>}
+      {secondaryDescription && <p className="portfolio-card__secondary-description">{secondaryDescription}</p>}
       {children}
       {tech && tech.length > 0 && <div className="tag-row" aria-label="Technologies used">{tech.map((item) => <span className="tag" key={item}>{item}</span>)}</div>}
       {footer && <div className="portfolio-card__footer">{footer}</div>}

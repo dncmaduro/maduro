@@ -1,6 +1,6 @@
 import type { SimpleIcon } from 'simple-icons'
 
-export type Page = 'home' | 'work' | 'experiments' | 'about' | 'contact'
+export type Page = 'home' | 'work' | 'experiments' | 'open-source' | 'about'
 
 export type CatState = 'idle' | 'walking' | 'running' | 'jumping' | 'sitting' | 'sleeping' | 'restless'
 
@@ -11,10 +11,13 @@ export type Project = {
   type: string
   status?: string
   description: string
+  secondaryDescription?: string
   tech: string[]
   features?: string[]
   demoUrl?: string
   sourceUrl?: string
+  sourceLabel?: string
+  installCommand?: string
   action?: string
   private?: boolean
 }
@@ -47,4 +50,23 @@ export type ToolboxShelf = {
   label: string
   note?: string
   items: ToolboxItem[]
+}
+
+export type PullRequest = {
+  number: number
+  title: string
+  description: string
+  status: string
+  date: string
+  url: string
+  technicalDetails: string[]
+}
+
+export type OpenSourceRepository = {
+  name: string
+  url: string
+  description: string
+  tech: string[]
+  role: string
+  pullRequests: PullRequest[]
 }

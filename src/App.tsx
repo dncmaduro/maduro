@@ -7,14 +7,15 @@ import type { CatState, Page } from './types'
 
 type Point = { x: number; y: number }
 
-const internalPages: Page[] = ['work', 'experiments', 'about', 'contact']
+const internalPages: Page[] = ['work', 'experiments', 'open-source', 'about']
 
 const pageFromPath = (path: string): Page => {
   const candidate = path.replace(/^\/+|\/+$/g, '')
   if (candidate === 'projects' || candidate === 'experience' || candidate === 'work') return 'work'
   if (candidate === 'experiments') return 'experiments'
+  if (candidate === 'open-source') return 'open-source'
   if (candidate === 'about') return 'about'
-  if (candidate === 'contact') return 'contact'
+  if (candidate === 'contact') return 'about'
   return 'home'
 }
 
@@ -253,8 +254,24 @@ export default function App() {
   }, [detachCat, moveCat, resetScroll, updateUrl])
 
   useEffect(() => {
+    if (window.location.pathname.replace(/^\/+|\/+$/g, '') === 'contact') {
+      window.history.replaceState({}, '', '/about#contact')
+      window.setTimeout(() => document.getElementById('contact')?.scrollIntoView({ block: 'start' }), 80)
+      return
+    }
     const canonicalPath = pathForPage(page)
     if (window.location.pathname !== canonicalPath) window.history.replaceState({}, '', canonicalPath)
+  }, [page])
+
+  useEffect(() => {
+    const titles: Record<Page, string> = {
+      home: 'dung tran — serious engineer, unserious website',
+      work: 'work — dung tran',
+      experiments: 'experiments — dung tran',
+      'open-source': 'open source — dung tran',
+      about: 'about — dung tran',
+    }
+    document.title = titles[page]
   }, [page])
 
   useEffect(() => {
@@ -280,6 +297,12 @@ export default function App() {
   useEffect(() => {
     resetScroll()
   }, [page, resetScroll])
+
+  useEffect(() => {
+    if (page !== 'about' || window.location.hash !== '#contact') return
+    const timer = window.setTimeout(() => document.getElementById('contact')?.scrollIntoView({ block: 'start' }), 100)
+    return () => window.clearTimeout(timer)
+  }, [page])
 
   useEffect(() => {
     if (page === 'home' || catAnchor || pendingAttachPageRef.current !== page) return
@@ -316,7 +339,7 @@ export default function App() {
         goHome()
         return
       }
-      const keyed: Record<string, Page> = { '1': 'work', '2': 'experiments', '3': 'about', '4': 'contact' }
+      const keyed: Record<string, Page> = { '1': 'work', '2': 'experiments', '3': 'open-source', '4': 'about' }
       const nextPage = keyed[event.key]
       if (!nextPage) return
       const tab = document.querySelector(`[data-cat-tab="${nextPage}"]`) as HTMLElement | null
